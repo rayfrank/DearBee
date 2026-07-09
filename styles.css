@@ -1,0 +1,355 @@
+:root {
+  color-scheme: dark;
+  --ink: #fff7ec;
+  --muted: #d5c3b7;
+  --soft: rgba(255, 247, 236, 0.76);
+  --panel: rgba(21, 24, 32, 0.64);
+  --panel-strong: rgba(12, 16, 24, 0.82);
+  --line: rgba(255, 247, 236, 0.2);
+  --gold: #ffd18b;
+  --coral: #ff8274;
+  --teal: #4ed2c6;
+  --rose: #d94c78;
+  --shadow: rgba(0, 0, 0, 0.38);
+  font-family:
+    Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  min-height: 100%;
+  margin: 0;
+  overflow: hidden;
+  background:
+    linear-gradient(180deg, rgba(16, 14, 20, 0.2), rgba(7, 10, 16, 0.9)),
+    url("assets/generated/rooftop-sunset.png") center / cover no-repeat;
+  color: var(--ink);
+}
+
+button {
+  font: inherit;
+}
+
+#love-scene {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  cursor: grab;
+}
+
+#love-scene.is-hovering {
+  cursor: pointer;
+}
+
+#love-scene:active {
+  cursor: grabbing;
+}
+
+.ambient-vignette {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 50% 25%, rgba(255, 209, 139, 0.12), transparent 34%),
+    linear-gradient(90deg, rgba(3, 5, 12, 0.76), transparent 32%, transparent 68%, rgba(3, 5, 12, 0.72)),
+    linear-gradient(180deg, rgba(2, 4, 10, 0.1), rgba(2, 4, 10, 0.72));
+}
+
+.interface {
+  position: relative;
+  z-index: 3;
+  min-height: 100vh;
+  pointer-events: none;
+}
+
+.intro {
+  position: fixed;
+  left: clamp(18px, 5vw, 72px);
+  top: clamp(34px, 12vh, 118px);
+  max-width: min(620px, calc(100vw - 36px));
+  pointer-events: auto;
+  text-shadow: 0 18px 50px var(--shadow);
+  transition:
+    transform 420ms ease,
+    opacity 420ms ease,
+    visibility 420ms ease;
+}
+
+.intro.is-hidden {
+  opacity: 0;
+  transform: translateY(-16px);
+  visibility: hidden;
+}
+
+.eyebrow,
+.mini-label {
+  margin: 0 0 10px;
+  color: var(--gold);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+h1,
+h2,
+p {
+  margin-top: 0;
+}
+
+h1 {
+  max-width: 9ch;
+  margin-bottom: 18px;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(3.5rem, 10vw, 8.6rem);
+  line-height: 0.86;
+  letter-spacing: 0;
+}
+
+.intro-copy {
+  max-width: 520px;
+  margin-bottom: 26px;
+  color: var(--soft);
+  font-size: clamp(1rem, 2vw, 1.24rem);
+  line-height: 1.58;
+}
+
+.primary-action,
+.text-button,
+.icon-button,
+.close-button {
+  border: 1px solid var(--line);
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 16px 38px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(16px);
+  transition:
+    transform 180ms ease,
+    border-color 180ms ease,
+    background 180ms ease;
+}
+
+.primary-action:hover,
+.text-button:hover,
+.icon-button:hover,
+.close-button:hover {
+  transform: translateY(-1px);
+  border-color: rgba(255, 209, 139, 0.6);
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.primary-action {
+  min-height: 48px;
+  padding: 0 28px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, rgba(255, 130, 116, 0.94), rgba(255, 209, 139, 0.88));
+  color: #251413;
+  font-weight: 900;
+}
+
+.topbar {
+  position: fixed;
+  left: clamp(12px, 3vw, 36px);
+  right: clamp(12px, 3vw, 36px);
+  bottom: clamp(12px, 3vw, 28px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel);
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.28);
+  backdrop-filter: blur(18px);
+  pointer-events: auto;
+}
+
+.topbar h2 {
+  max-width: 38vw;
+  margin: 0;
+  font-size: clamp(1rem, 2vw, 1.55rem);
+  line-height: 1.14;
+}
+
+.topbar .mini-label {
+  margin-bottom: 5px;
+}
+
+.control-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.text-button,
+.icon-button,
+.close-button {
+  min-height: 42px;
+  border-radius: 8px;
+  font-weight: 800;
+}
+
+.text-button {
+  padding: 0 15px;
+}
+
+.icon-button,
+.close-button {
+  width: 42px;
+  padding: 0;
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.story-panel,
+.final-note {
+  position: fixed;
+  top: clamp(14px, 5vh, 48px);
+  right: clamp(12px, 3vw, 36px);
+  width: min(390px, calc(100vw - 24px));
+  max-height: calc(100vh - 130px);
+  overflow: auto;
+  padding: 14px 14px 20px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel-strong);
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.34);
+  backdrop-filter: blur(18px);
+  pointer-events: auto;
+  opacity: 0;
+  transform: translateX(24px);
+  visibility: hidden;
+  transition:
+    opacity 280ms ease,
+    transform 280ms ease,
+    visibility 280ms ease;
+}
+
+.story-panel.is-open,
+.final-note.is-open {
+  opacity: 1;
+  transform: translateX(0);
+  visibility: visible;
+}
+
+.story-panel img {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  border-radius: 6px;
+  margin-bottom: 16px;
+}
+
+.story-panel h2,
+.final-note h2 {
+  margin-bottom: 10px;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(1.7rem, 5vw, 2.4rem);
+  line-height: 1.02;
+}
+
+.story-panel p,
+.final-note p {
+  color: var(--soft);
+  line-height: 1.55;
+}
+
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(7, 10, 16, 0.62);
+}
+
+.final-note {
+  left: 50%;
+  right: auto;
+  top: 50%;
+  width: min(720px, calc(100vw - 24px));
+  max-height: calc(100vh - 44px);
+  padding: clamp(22px, 5vw, 44px);
+  transform: translate(-50%, calc(-50% + 24px));
+}
+
+.final-note.is-open {
+  transform: translate(-50%, -50%);
+}
+
+.final-note p:not(.mini-label) {
+  margin-bottom: 0;
+  font-size: clamp(1.02rem, 2.5vw, 1.35rem);
+}
+
+@media (max-width: 760px) {
+  body {
+    overflow: hidden;
+  }
+
+  .intro {
+    top: 24px;
+  }
+
+  h1 {
+    font-size: clamp(3rem, 17vw, 5.3rem);
+  }
+
+  .intro-copy {
+    max-width: 340px;
+  }
+
+  .topbar {
+    align-items: flex-start;
+    flex-direction: column;
+    padding: 12px;
+  }
+
+  .topbar h2 {
+    max-width: 100%;
+  }
+
+  .control-row {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .text-button {
+    flex: 1 1 132px;
+    min-width: 0;
+    padding: 0 10px;
+  }
+
+  .story-panel {
+    top: 12px;
+    right: 12px;
+    max-height: calc(100vh - 160px);
+  }
+}
+
+@media (max-width: 420px) {
+  .intro-copy {
+    font-size: 0.95rem;
+  }
+
+  .primary-action {
+    width: 100%;
+  }
+
+  .control-row {
+    display: grid;
+    grid-template-columns: 42px 42px 1fr 1fr;
+  }
+
+  #musicBtn {
+    grid-column: 1 / -1;
+  }
+}
