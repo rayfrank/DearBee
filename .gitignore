@@ -7,3 +7,7 @@ server.*.log
 dist/
 .env
 .env.*
+/*.jpeg
+/*.jpg
+/*.png
+/*.mp3
