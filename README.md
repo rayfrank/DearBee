@@ -2,7 +2,7 @@
 
 An interactive Three.js love letter and pink memory room for Bee.
 
-The site opens inside a soft virtual room with photo memories on the walls, a Tamambo Restaurant date memory, the Pentagon 5 moment, saved-message panels, Summer Love, and a glowing 270 Degrees Restaurant sign in the background.
+The site opens inside a soft virtual room with photo memories on the walls, a Tamambo Restaurant date memory, the Pentagon 5 moment, saved-message panels, Summer Love, and a seamless 270 Degrees Restaurant mural blended into the background wall.
 
 ## Local Preview
 

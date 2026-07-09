@@ -9,7 +9,7 @@ const memories = [
     aspect: 960 / 1280,
     wall: "back",
     text:
-      "Ray meeting Bee at 3 Step Theory still feels like the first tiny door opening. One conversation became curiosity, curiosity became comfort, and suddenly every reply had that warm little pull."
+      "Ray meeting Bee at 3 Step Theory still feels like the first tiny door opening. The message was simple, 'Heyy Bee, it is Ray,' but it became curiosity, late-night conversation, Oontz jokes, and the first proof that something warm was starting."
   },
   {
     title: "Tamambo Restaurant",
@@ -19,7 +19,7 @@ const memories = [
     wall: "back",
     featured: true,
     text:
-      "This memory is Tamambo: the table, the toast, the soft light, the glasses, the way the night felt calm and exciting at the same time. It was not about a perfect pose; it was about us realizing this thing was becoming real."
+      "This memory is Tamambo: the table, the toast, the soft light, the glasses, the flowers, and the message after: 'I got home safely. I enjoyed the date and every moment with you.' It was calm, exciting, and real in that soft way only us can be."
   },
   {
     title: "The flowers",
@@ -28,7 +28,7 @@ const memories = [
     aspect: 960 / 1280,
     wall: "left",
     text:
-      "Flowers became their own language between us. Bee, bees loving flowers, Ray showing up with something gentle, and that sweet message about loving the flowers very much."
+      "Flowers became their own language between us. Bee loves flowers, bees love flowers, and the favorite gifts became flowers, wine, chocolates, cute notes, and GitHub links. This wall keeps the part where love turned into tiny thoughtful things."
   },
   {
     title: "Pentagon 5",
@@ -38,7 +38,7 @@ const memories = [
     wall: "right",
     pentagon: true,
     text:
-      "This one is for the Pentagon 5: you, me, Mike, Mel, and Qwarra. The movie-date memory has its own corner because love gets even sweeter when the people around us are laughing too."
+      "This one is for the Pentagon 5: you, me, Mike, Mel, and Qwarra. The movie-date memory has its own corner because love gets sweeter when the people around us are laughing, sharing snacks, taking photos, and making the night feel bigger than just one date."
   },
   {
     title: "Happy us",
@@ -65,7 +65,7 @@ const memories = [
     aspect: 960 / 1280,
     wall: "back",
     text:
-      "Your care shows up in the softest ways: checking in, holding my hand, making me feel seen, and turning affection into something I can actually feel around me."
+      "Your care shows up in the softest ways: checking in, holding my hand, saying love is not contingent on small things, reminding me to keep warm, and making affection feel steady enough to rest inside."
   },
   {
     title: "Golden hearts",
@@ -74,7 +74,7 @@ const memories = [
     aspect: 785 / 1600,
     wall: "left",
     text:
-      "Raybee, golden hearts, honey among rocks. Even the captions around us started sounding like a private language, bright and sweet and completely ours."
+      "Raybee, golden hearts, honey among rocks. Even the captions around us started sounding like a private language: RayBee to the world, Raybee on the decks, and a sun-and-bee symbol that somehow says us without needing a paragraph."
   },
   {
     title: "Our video calls",
@@ -83,7 +83,7 @@ const memories = [
     aspect: 780 / 1600,
     wall: "right",
     text:
-      "Even through a screen, you still find a way to feel present. The calls, the smiles, the little pauses, and the missing-you feeling all earned a place on the wall."
+      "Even through a screen, you still find a way to feel present. The calls, the smiles, the little pauses, and 'lovely to hear your voice as always' all earned a place on the wall because distance still felt close."
   },
   {
     title: "Girlfriend day",
@@ -92,7 +92,7 @@ const memories = [
     aspect: 960 / 1280,
     wall: "back",
     text:
-      "Girlfriend day deserves its own glow because some days quietly change everything. That photo holds the joy of choosing each other out loud."
+      "Girlfriend day deserves its own glow because some days quietly change everything. That photo holds the joy of choosing each other out loud, of becoming Ray's girlfriend and Bee's boyfriend without the sweetness needing to be hidden."
   },
   {
     title: "Magical kisses",
@@ -110,7 +110,7 @@ const memories = [
     aspect: 960 / 1280,
     wall: "right",
     text:
-      "The car memories belong here too: sunsets through the windshield, music playing, hands close, and those small rides that somehow felt like a whole chapter."
+      "The car memories belong here too: sunsets through the windshield, music playing, hands close, herbal tea talk, Oontz in the background, and those small rides that somehow felt like a whole chapter."
   },
   {
     title: "This photo wow",
@@ -128,7 +128,7 @@ const memories = [
     aspect: 785 / 1600,
     wall: "right",
     text:
-      "Everything is better with you. Movies, music, ordinary days, late replies, little jokes, all of it becomes warmer when your hand is in mine."
+      "Everything is better with you. Movies, music, ordinary days, late replies, little jokes, study dates, cozy movie ideas, and even the planning become warmer when your hand is in mine."
   },
   {
     title: "Your recent post",
@@ -137,7 +137,7 @@ const memories = [
     aspect: 751 / 1600,
     wall: "back",
     text:
-      "The recent post is here because being proud of each other is one of the sweetest parts of this. His and hers, soft proof, public joy."
+      "The recent post is here because being proud of each other is one of the sweetest parts of this. His and hers, soft proof, public joy, and the kind of post that says we are each other's person without needing to shout."
   },
   {
     title: "Long messages",
@@ -146,7 +146,52 @@ const memories = [
     aspect: 780 / 1600,
     wall: "right",
     text:
-      "The long messages matter because they make love feel detailed: the safe-arrived texts, the date reflections, the flowers, the reassurance, and the way you say exactly enough to stay with me."
+      "The long messages matter because they make love feel detailed: safe-arrived texts, date reflections, flowers, reassurance, faith, peace, and the way she wrote that the GitHub links, notes, and gallery are where she goes whenever she misses me."
+  },
+  {
+    title: "Marathon pace",
+    kicker: "Go with the flow",
+    image: "assets/photos/happy-us-again.jpeg",
+    aspect: 960 / 1280,
+    wall: "left",
+    text:
+      "Bee once said to relax, go with the flow, and let the heart guide it because it is a marathon, not a sprint. That belongs here because it shaped how Raybee learned to feel safe, patient, and real."
+  },
+  {
+    title: "Date philosophy",
+    kicker: "Simple and sophisticated",
+    image: "assets/photos/everything-better.jpeg",
+    aspect: 785 / 1600,
+    wall: "right",
+    text:
+      "Sophisticated dates bring the dressing up, wine, good food, lovely settings, and photos. Simple dates bring depth, bonding, games, walks, study dates, and conversation. Bee said the combination is ideal, and honestly that sounds like us."
+  },
+  {
+    title: "Safe space",
+    kicker: "Love in her language",
+    image: "assets/photos/care.jpeg",
+    aspect: 960 / 1280,
+    wall: "back",
+    text:
+      "One of the longest messages said thank you for the flowers, the GitHub links, the safe space, the shoulder to lean on, and loving her in the ways she wants to be loved. This room is built from that sentence."
+  },
+  {
+    title: "DJ Raybee",
+    kicker: "May the Oontz",
+    image: "assets/photos/golden-hearts.jpeg",
+    aspect: 785 / 1600,
+    wall: "left",
+    text:
+      "DJ Raybee on the decks, May the Oontz be with us, and the kind of music jokes that became part of the relationship. Some love stories have a soundtrack; ours has a full set."
+  },
+  {
+    title: "Missing you",
+    kicker: "Notes, links, gallery",
+    image: "assets/photos/recent-post.jpeg",
+    aspect: 751 / 1600,
+    wall: "right",
+    text:
+      "She said that whenever she misses Ray, she visits the GitHub links, reads the notes, or looks at the gallery. That is why this room needed to feel less like a page and more like a place she can enter."
   }
 ];
 
@@ -154,22 +199,42 @@ const wallMessages = [
   {
     title: "After the date",
     text:
-      "I got home safely. I enjoyed the date and every moment with you. I loved the flowers very much, and I love how thoughtful you are with me."
+      "I got home safely. I enjoyed the date and every moment with you. I look forward to spending more time with you. I also loved the flowers very much."
   },
   {
-    title: "The one I replay",
+    title: "Dates, her way",
     text:
-      "Everything is better with you. Even simple moments feel softer when it is us, and I keep thinking about how calm and happy you make me feel."
+      "Sophisticated dates spark romance: lovely settings, good food, good wine, dressing up, awesome photos, and enjoying the moment. Simple dates help us understand each other in depth."
   },
   {
     title: "Raybee",
     text:
-      "To golden hearts and honey among rocks. You make ordinary days feel bright, and the way we care for each other feels rare in the best way."
+      "I love RayBee. To RayBee. Raybee on the decks. May the Oontz be with us. Some names become a whole tiny universe."
   },
   {
-    title: "Soft check-ins",
+    title: "Tamambo calm",
     text:
-      "Thank you for showing up, for listening, for the flowers, the calls, the laughs, the Oontz, and for making love feel gentle instead of heavy."
+      "I do love cuddling, especially with you. You make me feel calm and relaxed. Also at Tamambo, we agreed to ask and talk gently."
+  },
+  {
+    title: "A long message",
+    text:
+      "Thank you for the flowers and the GitHub links. Thank you for loving me in the ways I want to be loved. You make me smile, laugh, and be at peace."
+  },
+  {
+    title: "Answered prayers",
+    text:
+      "I prayed for a love like this, for a partner like you, and God answered me. You are a symbol of my answered prayers."
+  },
+  {
+    title: "When she misses me",
+    text:
+      "Every time I miss you, I visit the GitHub links, read your notes, or look at our gallery. You'll always be in my heart wherever I go."
+  },
+  {
+    title: "Steady love",
+    text:
+      "My love for you is not contingent upon such things. Never doubt my love for you. Please take care of yourself for me."
   }
 ];
 
@@ -179,8 +244,15 @@ const chatBeats = [
   "I love flowers too much. Hence Bee, bees love flowers too.",
   "I got home safely. I enjoyed the date and every moment with you.",
   "I loved the flowers very much.",
-  "Everything is better with you.",
-  "To golden hearts and honey among rocks.",
+  "Relax and go with the flow. It is a marathon, not a sprint.",
+  "Sophisticated dates spark romance. Simple dates build depth.",
+  "I do love cuddling, especially with you.",
+  "Lovely to hear your voice as always.",
+  "Yeah, we connect in an interesting way. I love it.",
+  "I love RayBee.",
+  "MAY THE OONTZ BE WITH US!",
+  "Every time I miss you, I visit the GitHub links.",
+  "RayBee to the world.",
   "His and Hers."
 ];
 
@@ -426,27 +498,28 @@ function buildWindowWall() {
 function buildNeonSign() {
   const signTexture = makeSignTexture("270 Degrees Restaurant");
   const sign = new THREE.Mesh(
-    new THREE.PlaneGeometry(5.5, 1.1),
+    new THREE.PlaneGeometry(10.9, 2.05),
     new THREE.MeshBasicMaterial({
       map: signTexture,
       transparent: true,
+      opacity: 0.78,
       depthWrite: false
     })
   );
-  sign.position.set(-3.55, 5.15, room.backZ + 0.16);
+  sign.position.set(0.15, 5.0, room.backZ + 0.155);
   roomGroup.add(sign);
 
-  const glow = new THREE.Mesh(
-    new THREE.PlaneGeometry(6.2, 1.45),
+  const wallWash = new THREE.Mesh(
+    new THREE.PlaneGeometry(12.8, 2.75),
     new THREE.MeshBasicMaterial({
       color: 0xff5aa4,
       transparent: true,
-      opacity: 0.13,
+      opacity: 0.055,
       depthWrite: false
     })
   );
-  glow.position.set(-3.55, 5.15, room.backZ + 0.14);
-  roomGroup.add(glow);
+  wallWash.position.set(0.15, 5.0, room.backZ + 0.145);
+  roomGroup.add(wallWash);
 }
 
 function buildSofaCorner() {
@@ -878,8 +951,8 @@ function buildPentagon() {
 
 function makeSignTexture(text) {
   const pixelRatio = 2;
-  const width = 1400;
-  const height = 300;
+  const width = 1900;
+  const height = 420;
   const canvasEl = document.createElement("canvas");
   canvasEl.width = width * pixelRatio;
   canvasEl.height = height * pixelRatio;
@@ -887,24 +960,29 @@ function makeSignTexture(text) {
   ctx.scale(pixelRatio, pixelRatio);
   ctx.clearRect(0, 0, width, height);
 
-  ctx.shadowColor = "rgba(255, 90, 164, 0.9)";
-  ctx.shadowBlur = 30;
-  ctx.strokeStyle = "rgba(255, 190, 220, 0.72)";
-  ctx.lineWidth = 6;
-  roundedRect(ctx, 18, 38, width - 36, height - 76, 36);
-  ctx.stroke();
+  const gradient = ctx.createLinearGradient(0, 0, width, 0);
+  gradient.addColorStop(0, "rgba(255, 154, 199, 0.03)");
+  gradient.addColorStop(0.45, "rgba(255, 154, 199, 0.28)");
+  gradient.addColorStop(1, "rgba(255, 209, 139, 0.12)");
+  ctx.fillStyle = gradient;
+  ctx.fillRect(0, 0, width, height);
 
-  ctx.shadowBlur = 34;
-  ctx.fillStyle = "#ffd4e6";
-  ctx.font = "800 96px Georgia, 'Times New Roman', serif";
+  ctx.shadowColor = "rgba(255, 92, 170, 0.42)";
+  ctx.shadowBlur = 42;
+  ctx.fillStyle = "rgba(255, 223, 236, 0.48)";
+  ctx.font = "900 150px Georgia, 'Times New Roman', serif";
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
-  ctx.fillText(text, width / 2, height / 2 + 4);
+  ctx.fillText(text, width / 2, height / 2 - 22);
 
   ctx.shadowBlur = 0;
-  ctx.font = "800 26px Inter, Arial, sans-serif";
-  ctx.fillStyle = "rgba(112, 214, 208, 0.92)";
-  ctx.fillText("a glowing little landmark in our story", width / 2, height - 48);
+  ctx.font = "800 32px Inter, Arial, sans-serif";
+  ctx.fillStyle = "rgba(255, 247, 236, 0.22)";
+  ctx.fillText("Tamambo date  |  RayBee  |  flowers  |  Oontz  |  notes  |  gallery", width / 2, height - 96);
+
+  ctx.font = "700 22px Inter, Arial, sans-serif";
+  ctx.fillStyle = "rgba(112, 214, 208, 0.18)";
+  ctx.fillText("painted into the background, because this was only one landmark in the whole room", width / 2, height - 54);
 
   const texture = new THREE.CanvasTexture(canvasEl);
   texture.colorSpace = THREE.SRGBColorSpace;
