@@ -235,6 +235,16 @@ const wallMessages = [
     title: "Steady love",
     text:
       "My love for you is not contingent upon such things. Never doubt my love for you. Please take care of yourself for me."
+  },
+  {
+    title: "Her home",
+    text:
+      "Thank you so much for inviting me into your home. Words alone cannot say it, but I'm forever grateful for the trust, warmth, and space you shared with me."
+  },
+  {
+    title: "Safe space",
+    text:
+      "Thank you for providing a safe space for me to share my thoughts and emotions. Thank you for being nonjudgmental, soft, understanding, and kind."
   }
 ];
 
@@ -253,6 +263,9 @@ const chatBeats = [
   "MAY THE OONTZ BE WITH US!",
   "Every time I miss you, I visit the GitHub links.",
   "RayBee to the world.",
+  "You can call this our home too.",
+  "Thank you for providing a safe space for me.",
+  "Thank you so much for inviting me into your home.",
   "His and Hers."
 ];
 
@@ -457,7 +470,6 @@ function buildMemoryRoom() {
   buildNeonSign();
   buildSofaCorner();
   buildDateTable();
-  buildShelves();
   buildSoftRoomDetails();
 }
 
@@ -480,17 +492,17 @@ function buildWindowWall() {
   });
 
   const glass = new THREE.Mesh(new THREE.PlaneGeometry(5.7, 2.15), glassMaterial);
-  glass.position.set(4.55, 3.2, room.backZ + 0.13);
+  glass.position.set(4.55, 3.2, room.backZ + 0.035);
   roomGroup.add(glass);
 
   for (let i = 0; i < 4; i += 1) {
     const vertical = new THREE.Mesh(new THREE.BoxGeometry(0.055, 2.3, 0.08), frameMaterial);
-    vertical.position.set(2.0 + i * 1.7, 3.2, room.backZ + 0.22);
+    vertical.position.set(2.0 + i * 1.7, 3.2, room.backZ + 0.055);
     roomGroup.add(vertical);
   }
   for (let i = 0; i < 3; i += 1) {
     const horizontal = new THREE.Mesh(new THREE.BoxGeometry(5.85, 0.055, 0.08), frameMaterial);
-    horizontal.position.set(4.55, 2.15 + i * 1.05, room.backZ + 0.22);
+    horizontal.position.set(4.55, 2.15 + i * 1.05, room.backZ + 0.055);
     roomGroup.add(horizontal);
   }
 }
@@ -709,7 +721,7 @@ function buildGallery() {
     };
 
     const isLandscape = memory.aspect > 1;
-    const imageHeight = memory.featured ? 2.05 : isLandscape ? 1.45 : 1.72;
+    const imageHeight = memory.featured ? 1.92 : isLandscape ? 1.28 : 1.55;
     const imageWidth = imageHeight * memory.aspect;
     const frameGeometry = new THREE.PlaneGeometry(imageWidth + 0.22, imageHeight + 0.22);
     const frameMaterial = new THREE.MeshStandardMaterial({
@@ -769,34 +781,20 @@ function buildGallery() {
 }
 
 function getWallPlacement(memory, index) {
-  const backSpots = [
-    [-5.2, 2.8, 0],
-    [-1.65, 2.45, 0],
-    [1.55, 2.55, 0],
-    [5.2, 2.7, 0],
-    [-4.0, 4.1, 0],
-    [0.15, 4.08, 0],
-    [4.2, 4.05, 0]
-  ];
-  const leftSpots = [
-    [-4.1, 2.8, 0.02],
-    [-1.75, 2.3, -0.04],
-    [0.65, 3.08, 0.03],
-    [3.12, 2.5, -0.02],
-    [4.85, 3.85, 0.04]
-  ];
-  const rightSpots = [
-    [-4.65, 2.72, -0.02],
-    [-2.2, 3.08, 0.04],
-    [0.25, 2.45, -0.03],
-    [2.85, 2.95, 0.02],
-    [4.72, 3.75, -0.04]
-  ];
-
   const countsBefore = memories.slice(0, index).filter((item) => item.wall === memory.wall).length;
+  const sideColumns = [-4.9, -2.45, 0, 2.45, 4.9];
+  const backRows = [
+    { y: 1.9, columns: [-5.55, -1.85, 1.85, 5.55] },
+    { y: 4.25, columns: [-5.15, -1.7, 1.7, 5.15] }
+  ];
+  const sideRows = [1.65, 4.15];
+  const tilt = ((countsBefore % 5) - 2) * 0.018;
 
   if (memory.wall === "left") {
-    const [z, y, tilt] = leftSpots[countsBefore % leftSpots.length];
+    const row = Math.floor(countsBefore / sideColumns.length);
+    const col = countsBefore % sideColumns.length;
+    const y = sideRows[Math.min(row, sideRows.length - 1)];
+    const z = sideColumns[col] + Math.max(0, row - 1) * 0.18;
     return {
       wall: "left",
       position: new THREE.Vector3(room.leftX + 0.18, y, z),
@@ -806,7 +804,10 @@ function getWallPlacement(memory, index) {
   }
 
   if (memory.wall === "right") {
-    const [z, y, tilt] = rightSpots[countsBefore % rightSpots.length];
+    const row = Math.floor(countsBefore / sideColumns.length);
+    const col = countsBefore % sideColumns.length;
+    const y = sideRows[Math.min(row, sideRows.length - 1)];
+    const z = sideColumns[col] - Math.max(0, row - 1) * 0.18;
     return {
       wall: "right",
       position: new THREE.Vector3(room.rightX - 0.18, y, z),
@@ -815,7 +816,11 @@ function getWallPlacement(memory, index) {
     };
   }
 
-  const [x, y, tilt] = backSpots[countsBefore % backSpots.length];
+  const row = Math.floor(countsBefore / backRows[0].columns.length);
+  const rowConfig = backRows[Math.min(row, backRows.length - 1)];
+  const col = countsBefore % rowConfig.columns.length;
+  const x = rowConfig.columns[col] + Math.max(0, row - 1) * 0.22;
+  const y = rowConfig.y;
   return {
     wall: "back",
     position: new THREE.Vector3(x, y, room.backZ + 0.18),
@@ -880,9 +885,11 @@ function buildChatBeats() {
 }
 
 function buildLongMessageWall() {
+  const sideSlots = [-4.9, -2.45, 0, 2.45, 4.9];
   wallMessages.forEach((message, index) => {
-    const texture = makeTextTexture(message.text, index + 20, 980, 420, {
-      fontSize: 31,
+    const texture = makeTextTexture(message.text, index + 20, 980, 340, {
+      fontSize: 24,
+      lineHeight: 34,
       title: message.title
     });
     const material = new THREE.MeshBasicMaterial({
@@ -891,12 +898,13 @@ function buildLongMessageWall() {
       opacity: 0.94,
       depthWrite: false
     });
-    const mesh = new THREE.Mesh(new THREE.PlaneGeometry(3.15, 1.34), material);
-    if (index < 2) {
-      mesh.position.set(room.rightX - 0.16, 4.0 - index * 1.52, 0.9 + index * 2.22);
+    const mesh = new THREE.Mesh(new THREE.PlaneGeometry(2.18, 0.76), material);
+    const slot = sideSlots[index % sideSlots.length];
+    if (index < sideSlots.length) {
+      mesh.position.set(room.rightX - 0.16, 5.28, slot);
       mesh.rotation.y = -Math.PI / 2;
     } else {
-      mesh.position.set(room.leftX + 0.16, 4.0 - (index - 2) * 1.52, 0.95 + (index - 2) * 2.25);
+      mesh.position.set(room.leftX + 0.16, 5.28, slot);
       mesh.rotation.y = Math.PI / 2;
     }
     mesh.userData.phase = index * 0.5;
