@@ -192,8 +192,77 @@ const memories = [
     wall: "right",
     text:
       "She said that whenever she misses Ray, she visits the GitHub links, reads the notes, or looks at the gallery. That is why this room needed to feel less like a page and more like a place she can enter."
+  },
+  {
+    title: "Desk and GitHub links",
+    kicker: "Laptop corner",
+    image: "assets/photos/video-calls.jpeg",
+    aspect: 780 / 1600,
+    area: "desk",
+    text:
+      "This belongs by the desk and laptop because the GitHub links became part of the love language. She said she visits the links, reads the notes, and looks at the gallery whenever she misses Ray."
+  },
+  {
+    title: "Music setup",
+    kicker: "Speaker system",
+    image: "assets/photos/golden-hearts.jpeg",
+    aspect: 785 / 1600,
+    area: "music",
+    text:
+      "The music corner is for the speaker system, the laptop, Virtual DJ, Raybee on the decks, and every 'May the Oontz be with us' moment that turned the room into a tiny dance floor."
+  },
+  {
+    title: "Kitchen things",
+    kicker: "Tea, food, cooking",
+    image: "assets/photos/everything-better.jpeg",
+    aspect: 785 / 1600,
+    area: "kitchen",
+    text:
+      "The kitchen keeps the everyday sweetness: herbal tea, food plans, cooking, breakfast ideas, snacks, and the practical love of making sure each other eats and feels cared for."
+  },
+  {
+    title: "Her home",
+    kicker: "Forever grateful",
+    image: "assets/photos/care.jpeg",
+    aspect: 960 / 1280,
+    area: "sitting",
+    text:
+      "Thank you so much for inviting me into your home. Words alone cannot say it, but I'm forever grateful for the trust, warmth, space, and comfort you shared with me."
+  },
+  {
+    title: "Balcony after kitchen",
+    kicker: "Soft air",
+    image: "assets/photos/car-photo.jpeg",
+    aspect: 960 / 1280,
+    area: "balcony",
+    text:
+      "After the kitchen, the balcony holds the quieter air: calls, safe journeys, sunsets, missing each other, and the feeling that even a small pause outside can become a memory."
   }
 ];
+
+const memoryAreas = {
+  "The first spark": "desk",
+  "Tamambo Restaurant": "balcony",
+  "The flowers": "kitchen",
+  "Pentagon 5": "sitting",
+  "Happy us": "sitting",
+  "Happy us again": "bedroom",
+  "How you care": "bedroom",
+  "Golden hearts": "music",
+  "Our video calls": "desk",
+  "Girlfriend day": "bedroom",
+  "Magical kisses": "bedroom",
+  "The car chapter": "balcony",
+  "This photo wow": "sitting",
+  "Everything is better": "kitchen",
+  "Your recent post": "sitting",
+  "Long messages": "desk",
+  "Marathon pace": "sitting",
+  "Date philosophy": "kitchen",
+  "Safe space": "bedroom",
+  "DJ Raybee": "music",
+  "Missing you": "desk"
+};
 
 const wallMessages = [
   {
@@ -245,6 +314,36 @@ const wallMessages = [
     title: "Safe space",
     text:
       "Thank you for providing a safe space for me to share my thoughts and emotions. Thank you for being nonjudgmental, soft, understanding, and kind."
+  },
+  {
+    title: "Home too",
+    text:
+      "You can call this our home too. I enjoyed hosting you very much. As you do your work, if you need my company I'll be a phone call away."
+  },
+  {
+    title: "Morning links",
+    text:
+      "I spent all morning looking at the GitHub links you made for me. They reminded me how much you actually love me. I really miss you."
+  },
+  {
+    title: "Music laptop",
+    text:
+      "Virtual DJ, laptop and a controller deck. Right now, laptop, Virtual DJ and a mouse. If the music is slapping, the room becomes Raybee on the decks."
+  },
+  {
+    title: "Bedroom comfort",
+    text:
+      "Watching a movie in bed. I do love cuddling, especially with you. You make me feel calm and relaxed, and your voice soothes me."
+  },
+  {
+    title: "Kitchen comfort",
+    text:
+      "I love indomie. I love herbal teas, lattes and coffee. The kitchen keeps the little everyday things that make home feel cared for."
+  },
+  {
+    title: "Best relationship",
+    text:
+      "You can share anything with me and always rely on me to hear you out and do what it takes to give us the best relationship ever."
   }
 ];
 
@@ -271,12 +370,14 @@ const chatBeats = [
 
 const pentagonNames = ["Ray", "Bee", "Mike", "Mel", "Qwarra"];
 const room = {
-  width: 16,
-  depth: 12,
-  height: 7.2,
-  backZ: -5.7,
-  leftX: -7.8,
-  rightX: 7.8
+  width: 18,
+  depth: 17,
+  height: 6.4,
+  floorY: -1.15,
+  sitting: { minX: -5.8, maxX: 5.8, minZ: 0.4, maxZ: 7.0 },
+  bedroom: { minX: 2.0, maxX: 8.8, minZ: -6.2, maxZ: 0.4 },
+  kitchen: { minX: -8.8, maxX: -2.0, minZ: -6.2, maxZ: 0.4 },
+  balcony: { minX: -8.8, maxX: -2.0, minZ: -9.5, maxZ: -6.2 }
 };
 
 const canvas = document.querySelector("#love-scene");
@@ -299,10 +400,10 @@ const closeFinal = document.querySelector("#closeFinal");
 
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x120b12);
-scene.fog = new THREE.FogExp2(0x160f18, 0.022);
+scene.fog = new THREE.FogExp2(0x160f18, 0.017);
 
 const camera = new THREE.PerspectiveCamera(48, window.innerWidth / window.innerHeight, 0.1, 100);
-camera.position.set(0, 2.9, 10.8);
+camera.position.set(0, 4.1, 15.5);
 
 const renderer = new THREE.WebGLRenderer({
   canvas,
@@ -319,11 +420,11 @@ renderer.toneMappingExposure = 1.12;
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true;
 controls.dampingFactor = 0.06;
-controls.minDistance = 4.8;
-controls.maxDistance = 16;
+controls.minDistance = 4.4;
+controls.maxDistance = 25;
 controls.maxPolarAngle = Math.PI * 0.62;
 controls.minPolarAngle = Math.PI * 0.2;
-controls.target.set(0, 1.65, -1.2);
+controls.target.set(0, 1.65, -0.9);
 
 const textureLoader = new THREE.TextureLoader();
 const gallery = new THREE.Group();
@@ -390,87 +491,322 @@ window.addEventListener("keydown", onKeydown);
 renderer.setAnimationLoop(animate);
 
 function buildLights() {
-  scene.add(new THREE.HemisphereLight(0xffd5e5, 0x2a1b29, 1.5));
+  scene.add(new THREE.HemisphereLight(0xffd5e5, 0x251929, 1.45));
 
-  const windowGlow = new THREE.DirectionalLight(0xffb0c8, 2.5);
-  windowGlow.position.set(-4, 7, 6);
-  scene.add(windowGlow);
+  const balconyGlow = new THREE.DirectionalLight(0xffcfab, 2.7);
+  balconyGlow.position.set(-8, 8, -9);
+  scene.add(balconyGlow);
 
-  const signGlow = new THREE.PointLight(0xff5aa4, 32, 20);
-  signGlow.position.set(0, 4.6, -4.6);
-  scene.add(signGlow);
+  const sittingGlow = new THREE.PointLight(0xff8fbe, 24, 18);
+  sittingGlow.position.set(0, 3.8, 4.8);
+  scene.add(sittingGlow);
 
-  const tealLamp = new THREE.PointLight(0x63d7cf, 14, 14);
-  tealLamp.position.set(5.4, 2.4, 1.8);
-  scene.add(tealLamp);
+  const musicGlow = new THREE.PointLight(0x70d6d0, 18, 13);
+  musicGlow.position.set(4.8, 2.4, 5.2);
+  scene.add(musicGlow);
 
-  const tableWarmth = new THREE.PointLight(0xffd18b, 18, 13);
-  tableWarmth.position.set(-3.4, 1.55, 2.6);
-  scene.add(tableWarmth);
+  const kitchenGlow = new THREE.PointLight(0xffd18b, 16, 12);
+  kitchenGlow.position.set(-5.5, 2.6, -3.6);
+  scene.add(kitchenGlow);
+
+  const bedroomGlow = new THREE.PointLight(0xffa8cf, 14, 11);
+  bedroomGlow.position.set(5.6, 2.2, -3.8);
+  scene.add(bedroomGlow);
 }
 
 function buildMemoryRoom() {
-  const floorMaterial = new THREE.MeshStandardMaterial({
-    color: 0x4b302c,
-    roughness: 0.58,
-    metalness: 0.05
+  buildApartmentShell();
+  buildApartmentMural();
+  buildSittingRoom();
+  buildDeskCorner();
+  buildMusicCorner();
+  buildBedroomRoom();
+  buildKitchenRoom();
+  buildBalconyRoom();
+}
+
+function makeRoomMaterial(color, options = {}) {
+  return new THREE.MeshStandardMaterial({
+    color,
+    roughness: options.roughness ?? 0.68,
+    metalness: options.metalness ?? 0.04,
+    emissive: options.emissive ?? 0x000000,
+    emissiveIntensity: options.emissiveIntensity ?? 0,
+    transparent: Boolean(options.opacity),
+    opacity: options.opacity ?? 1
   });
-  const wallMaterial = new THREE.MeshStandardMaterial({
-    color: 0x3f2637,
-    roughness: 0.74,
-    metalness: 0.02
+}
+
+function addBox(width, height, depth, color, x, y, z, options = {}) {
+  const mesh = new THREE.Mesh(
+    new THREE.BoxGeometry(width, height, depth),
+    makeRoomMaterial(color, options)
+  );
+  mesh.position.set(x, y, z);
+  if (options.rotation) {
+    mesh.rotation.set(options.rotation.x || 0, options.rotation.y || 0, options.rotation.z || 0);
+  }
+  roomGroup.add(mesh);
+  return mesh;
+}
+
+function addFloor(area, color, label) {
+  const width = area.maxX - area.minX;
+  const depth = area.maxZ - area.minZ;
+  const x = (area.minX + area.maxX) / 2;
+  const z = (area.minZ + area.maxZ) / 2;
+  addBox(width, 0.16, depth, color, x, room.floorY, z, {
+    roughness: 0.62,
+    emissive: 0x140711,
+    emissiveIntensity: 0.08
   });
-  const sideWallMaterial = new THREE.MeshStandardMaterial({
-    color: 0x2e2534,
+  addRoomFloorLabel(label, x, z);
+}
+
+function addRoomFloorLabel(text, x, z) {
+  const label = new THREE.Mesh(
+    new THREE.PlaneGeometry(2.2, 0.48),
+    new THREE.MeshBasicMaterial({
+      map: makeTextTexture(text, text.length, 740, 180, { fontSize: 34 }),
+      transparent: true,
+      opacity: 0.24,
+      depthWrite: false
+    })
+  );
+  label.position.set(x, room.floorY + 0.095, z);
+  label.rotation.x = -Math.PI / 2;
+  roomGroup.add(label);
+}
+
+function addWall(width, height, depth, color, x, z, options = {}) {
+  return addBox(width, height, depth, color, x, room.floorY + height / 2, z, {
     roughness: 0.78,
-    metalness: 0.02
+    metalness: 0.02,
+    opacity: options.opacity,
+    emissive: options.emissive || 0x08020a,
+    emissiveIntensity: options.emissiveIntensity ?? 0.04
   });
+}
 
-  const floor = new THREE.Mesh(new THREE.BoxGeometry(room.width, 0.18, room.depth), floorMaterial);
-  floor.position.set(0, -1.15, 0);
-  roomGroup.add(floor);
+function buildApartmentShell() {
+  addFloor(room.sitting, 0x462b3b, "Sitting room");
+  addFloor(room.bedroom, 0x34283a, "Bedroom");
+  addFloor(room.kitchen, 0x3b3040, "Kitchen");
+  addFloor(room.balcony, 0x2a2f3c, "Balcony");
 
-  const rug = new THREE.Mesh(
-    new THREE.BoxGeometry(8.8, 0.04, 5.7),
-    new THREE.MeshStandardMaterial({
-      color: 0xe690b1,
-      roughness: 0.92,
-      metalness: 0,
-      emissive: 0x210612,
-      emissiveIntensity: 0.16
+  const wall = 0x2f2030;
+  const accentWall = 0x4b2940;
+  addWall(11.6, room.height, 0.16, accentWall, 0, room.sitting.minZ);
+  addWall(0.16, room.height, 6.6, wall, room.sitting.minX, 3.7);
+  addWall(0.16, room.height, 6.6, wall, room.sitting.maxX, 3.7);
+
+  addWall(6.8, room.height, 0.16, 0x2a2233, 5.4, room.bedroom.minZ);
+  addWall(0.16, room.height, 6.6, 0x2b2232, room.bedroom.maxX, -2.9);
+  addWall(0.16, room.height, 6.6, 0x2d1f2d, room.bedroom.minX, -2.9, { opacity: 0.72 });
+
+  addWall(6.8, room.height, 0.16, 0x33283a, -5.4, room.kitchen.minZ, { opacity: 0.64 });
+  addWall(0.16, room.height, 6.6, 0x2b2232, room.kitchen.minX, -2.9);
+  addWall(0.16, room.height, 6.6, 0x2d1f2d, room.kitchen.maxX, -2.9, { opacity: 0.72 });
+
+  addBox(6.7, 0.92, 0.1, 0x392f3c, -5.4, room.floorY + 0.46, room.balcony.minZ, {
+    roughness: 0.48,
+    metalness: 0.18
+  });
+  for (let i = 0; i < 7; i += 1) {
+    addBox(0.06, 1.08, 0.06, 0x70d6d0, -8.1 + i * 0.9, room.floorY + 0.55, room.balcony.minZ + 0.02, {
+      roughness: 0.28,
+      metalness: 0.42,
+      emissive: 0x062726,
+      emissiveIntensity: 0.22
+    });
+  }
+
+  addBox(room.width, 0.12, room.depth, 0x17111c, 0, room.height - 1.15, -1.25, {
+    roughness: 0.84,
+    opacity: 0.58
+  });
+}
+
+function buildApartmentMural() {
+  const mural = new THREE.Mesh(
+    new THREE.PlaneGeometry(9.4, 1.55),
+    new THREE.MeshBasicMaterial({
+      map: makeSignTexture("270 Degrees Restaurant"),
+      transparent: true,
+      opacity: 0.32,
+      depthWrite: false
     })
   );
-  rug.position.set(0, -1.02, 1.1);
-  roomGroup.add(rug);
+  mural.position.set(0, 5.15, room.sitting.minZ + 0.09);
+  roomGroup.add(mural);
+}
 
-  const backWall = new THREE.Mesh(new THREE.BoxGeometry(room.width, room.height, 0.2), wallMaterial);
-  backWall.position.set(0, 2.35, room.backZ);
-  roomGroup.add(backWall);
+function buildSittingRoom() {
+  addBox(4.4, 0.54, 1.28, 0xc6648d, -1.5, -0.69, 5.75, {
+    roughness: 0.56,
+    emissive: 0x250612,
+    emissiveIntensity: 0.14
+  });
+  addBox(4.55, 1.05, 0.28, 0xc6648d, -1.5, -0.12, 6.35, {
+    roughness: 0.56,
+    emissive: 0x250612,
+    emissiveIntensity: 0.14
+  });
+  addBox(0.34, 0.86, 1.44, 0xc6648d, -3.95, -0.38, 5.75);
+  addBox(0.34, 0.86, 1.44, 0xc6648d, 0.95, -0.38, 5.75);
+  addBox(2.55, 0.16, 1.15, 0x8a4f33, -1.35, -0.49, 4.35, { roughness: 0.42 });
+  addBox(2.15, 0.045, 1.0, 0xff9fc0, -1.35, -0.38, 4.35, { roughness: 0.76, opacity: 0.36 });
+  addBox(0.64, 0.42, 0.15, 0xffc9d9, -2.5, 0.02, 6.2, { roughness: 0.86 });
+  addBox(0.64, 0.42, 0.15, 0x70d6d0, -1.45, 0.02, 6.2, { roughness: 0.86 });
+  addBox(0.64, 0.42, 0.15, 0xffd18b, -0.4, 0.02, 6.2, { roughness: 0.86 });
+}
 
-  const leftWall = new THREE.Mesh(new THREE.BoxGeometry(0.2, room.height, room.depth), sideWallMaterial);
-  leftWall.position.set(room.leftX, 2.35, 0);
-  roomGroup.add(leftWall);
+function buildDeskCorner() {
+  addBox(2.35, 0.16, 1.1, 0x7b4c39, -4.35, -0.43, 2.35, { roughness: 0.42 });
+  addBox(0.08, 0.92, 0.08, 0x3a2523, -5.3, -0.9, 1.92);
+  addBox(0.08, 0.92, 0.08, 0x3a2523, -3.4, -0.9, 1.92);
+  addBox(0.08, 0.92, 0.08, 0x3a2523, -5.3, -0.9, 2.78);
+  addBox(0.08, 0.92, 0.08, 0x3a2523, -3.4, -0.9, 2.78);
+  addBox(0.82, 0.08, 0.55, 0x141821, -4.35, -0.28, 2.2, { roughness: 0.3, metalness: 0.25 });
+  addBox(0.82, 0.56, 0.06, 0x131923, -4.35, 0.02, 1.92, {
+    roughness: 0.24,
+    metalness: 0.22,
+    emissive: 0x16383d,
+    emissiveIntensity: 0.7
+  });
+  addBox(0.82, 0.16, 0.82, 0x4b3948, -4.35, -0.62, 3.45, { roughness: 0.74 });
+  addBox(0.16, 0.68, 0.16, 0x2a2028, -4.35, -0.86, 3.45, { roughness: 0.46 });
+  addBox(0.9, 0.52, 0.16, 0x5b3d52, -4.35, -0.38, 3.1, { roughness: 0.72 });
+}
 
-  const rightWall = new THREE.Mesh(new THREE.BoxGeometry(0.2, room.height, room.depth), sideWallMaterial);
-  rightWall.position.set(room.rightX, 2.35, 0);
-  roomGroup.add(rightWall);
+function buildMusicCorner() {
+  addBox(1.85, 0.16, 0.92, 0x5f3a35, 4.35, -0.43, 5.0, { roughness: 0.42 });
+  addBox(0.7, 0.08, 0.48, 0x141821, 4.35, -0.28, 4.86, { roughness: 0.3, metalness: 0.25 });
+  addBox(0.7, 0.48, 0.06, 0x11171f, 4.35, -0.02, 4.62, {
+    roughness: 0.24,
+    metalness: 0.22,
+    emissive: 0x173d39,
+    emissiveIntensity: 0.76
+  });
+  [-0.78, 0.78].forEach((offset) => {
+    addBox(0.44, 1.4, 0.44, 0x13151d, 4.35 + offset, -0.43, 5.72, {
+      roughness: 0.32,
+      metalness: 0.12,
+      emissive: 0x061b1b,
+      emissiveIntensity: 0.25
+    });
+    addBox(0.24, 0.24, 0.04, 0x70d6d0, 4.35 + offset, -0.1, 5.48, {
+      roughness: 0.26,
+      emissive: 0x0b3836,
+      emissiveIntensity: 0.85
+    });
+    addBox(0.32, 0.32, 0.04, 0xff9fc0, 4.35 + offset, -0.62, 5.48, {
+      roughness: 0.26,
+      emissive: 0x3a0617,
+      emissiveIntensity: 0.5
+    });
+  });
+}
 
-  const ceiling = new THREE.Mesh(
-    new THREE.BoxGeometry(room.width, 0.14, room.depth),
-    new THREE.MeshStandardMaterial({
-      color: 0x1d1822,
-      roughness: 0.8,
-      metalness: 0.02
+function buildBedroomRoom() {
+  addBox(3.4, 0.42, 2.25, 0x6a4560, 5.2, -0.73, -4.25, { roughness: 0.72 });
+  addBox(3.55, 0.42, 0.24, 0x7b506e, 5.2, -0.25, -5.25, { roughness: 0.68 });
+  addBox(3.18, 0.16, 2.05, 0xffb7cf, 5.2, -0.46, -4.08, { roughness: 0.88 });
+  addBox(0.7, 0.28, 0.48, 0xfff0de, 4.35, -0.22, -5.0, { roughness: 0.9 });
+  addBox(0.7, 0.28, 0.48, 0x70d6d0, 6.1, -0.22, -5.0, { roughness: 0.9 });
+  addBox(1.25, 2.35, 0.62, 0x6f4635, 8.05, 0.05, -2.8, { roughness: 0.54 });
+  addBox(0.06, 2.2, 0.04, 0xffd18b, 8.05, 0.08, -2.45, { roughness: 0.32, metalness: 0.32 });
+  for (let i = 0; i < 3; i += 1) {
+    addBox(1.5, 0.08, 0.38, 0x704737, 2.55, 0.32 + i * 0.62, -5.15, { roughness: 0.5 });
+    addBox(0.24, 0.36, 0.22, i % 2 ? 0xffd18b : 0xff9fc0, 2.05 + i * 0.32, 0.55 + i * 0.62, -5.15, { roughness: 0.66 });
+  }
+}
+
+function buildKitchenRoom() {
+  addBox(4.6, 0.2, 0.78, 0x7a5948, -5.4, -0.38, -5.3, { roughness: 0.48 });
+  addBox(4.75, 1.0, 0.66, 0x4f3740, -5.4, -0.9, -5.28, { roughness: 0.58 });
+  addBox(0.95, 1.9, 0.72, 0xd7ced5, -8.05, -0.12, -4.95, { roughness: 0.38, metalness: 0.08 });
+  addBox(0.76, 0.08, 0.5, 0x151820, -5.2, -0.23, -5.08, { roughness: 0.36 });
+  addBox(0.44, 0.05, 0.35, 0xffd18b, -4.42, -0.2, -5.05, { roughness: 0.44, emissive: 0x3b1b07, emissiveIntensity: 0.24 });
+  addBox(1.52, 0.12, 0.98, 0x8a4f33, -5.5, -0.48, -2.6, { roughness: 0.48 });
+  addBox(0.42, 0.34, 0.42, 0xfff0de, -5.95, -0.25, -2.55, { roughness: 0.72 });
+  addBox(0.34, 0.14, 0.34, 0x70d6d0, -5.15, -0.18, -2.45, { roughness: 0.64 });
+}
+
+function buildBalconyRoom() {
+  addBox(0.52, 0.52, 0.52, 0x6f4b3a, -8.05, -0.78, -8.35, { roughness: 0.72 });
+  addBox(0.52, 0.52, 0.52, 0x6f4b3a, -2.75, -0.78, -8.35, { roughness: 0.72 });
+  [-8.05, -2.75].forEach((x) => {
+    addBox(0.08, 0.72, 0.08, 0x5fae73, x, -0.2, -8.35, { roughness: 0.6 });
+    addBox(0.52, 0.08, 0.52, 0x70a870, x, 0.18, -8.35, { roughness: 0.84 });
+  });
+  const city = new THREE.Mesh(
+    new THREE.PlaneGeometry(6.2, 2.2),
+    new THREE.MeshBasicMaterial({
+      map: makeBalconyTexture(),
+      transparent: true,
+      opacity: 0.78,
+      depthWrite: false
     })
   );
-  ceiling.position.set(0, room.height - 1.16, 0);
-  roomGroup.add(ceiling);
+  city.position.set(-5.4, 2.2, room.balcony.minZ - 0.04);
+  roomGroup.add(city);
+}
 
-  buildWindowWall();
-  buildNeonSign();
-  buildSofaCorner();
-  buildDateTable();
-  buildSoftRoomDetails();
+function buildApartmentWayfinding() {
+  const notes = [
+    ["desk + laptop", -4.35, 1.68, 2.02, 0],
+    ["speaker system", 4.35, 1.72, 5.9, 0],
+    ["bed + wardrobe + shelf", 5.35, 1.86, -5.95, 0],
+    ["kitchen", -5.3, 1.78, -6.08, 0],
+    ["balcony after kitchen", -5.4, 1.62, -9.38, 0]
+  ];
+  notes.forEach(([text, x, y, z]) => {
+    const mesh = new THREE.Mesh(
+      new THREE.PlaneGeometry(2.1, 0.44),
+      new THREE.MeshBasicMaterial({
+        map: makeTextTexture(text, text.length + 30, 760, 170, { fontSize: 30 }),
+        transparent: true,
+        opacity: 0.68,
+        depthWrite: false
+      })
+    );
+    mesh.position.set(x, y, z);
+    roomGroup.add(mesh);
+  });
+}
+
+function makeBalconyTexture() {
+  const pixelRatio = 2;
+  const width = 1100;
+  const height = 420;
+  const canvasEl = document.createElement("canvas");
+  canvasEl.width = width * pixelRatio;
+  canvasEl.height = height * pixelRatio;
+  const ctx = canvasEl.getContext("2d");
+  ctx.scale(pixelRatio, pixelRatio);
+  const gradient = ctx.createLinearGradient(0, 0, 0, height);
+  gradient.addColorStop(0, "#ffb0c8");
+  gradient.addColorStop(0.48, "#77516a");
+  gradient.addColorStop(1, "#141823");
+  ctx.fillStyle = gradient;
+  ctx.fillRect(0, 0, width, height);
+  ctx.fillStyle = "rgba(255, 209, 139, 0.86)";
+  ctx.beginPath();
+  ctx.arc(780, 100, 54, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.fillStyle = "rgba(16, 18, 28, 0.72)";
+  for (let i = 0; i < 18; i += 1) {
+    const x = 50 + i * 62;
+    const h = 40 + (i % 5) * 24;
+    ctx.fillRect(x, height - h - 35, 36, h);
+  }
+  ctx.fillStyle = "rgba(255, 247, 236, 0.34)";
+  ctx.font = "800 38px Georgia, 'Times New Roman', serif";
+  ctx.fillText("quiet balcony air", 52, 72);
+  const texture = new THREE.CanvasTexture(canvasEl);
+  texture.colorSpace = THREE.SRGBColorSpace;
+  return texture;
 }
 
 function buildWindowWall() {
@@ -781,52 +1117,68 @@ function buildGallery() {
 }
 
 function getWallPlacement(memory, index) {
-  const countsBefore = memories.slice(0, index).filter((item) => item.wall === memory.wall).length;
-  const sideColumns = [-4.9, -2.45, 0, 2.45, 4.9];
-  const backRows = [
-    { y: 1.9, columns: [-5.55, -1.85, 1.85, 5.55] },
-    { y: 4.25, columns: [-5.15, -1.7, 1.7, 5.15] }
-  ];
-  const sideRows = [1.65, 4.15];
-  const tilt = ((countsBefore % 5) - 2) * 0.018;
-
-  if (memory.wall === "left") {
-    const row = Math.floor(countsBefore / sideColumns.length);
-    const col = countsBefore % sideColumns.length;
-    const y = sideRows[Math.min(row, sideRows.length - 1)];
-    const z = sideColumns[col] + Math.max(0, row - 1) * 0.18;
-    return {
-      wall: "left",
-      position: new THREE.Vector3(room.leftX + 0.18, y, z),
-      rotation: new THREE.Euler(0, Math.PI / 2, tilt),
-      cameraOffset: new THREE.Vector3(4.35, 0.55, 0.12)
-    };
-  }
-
-  if (memory.wall === "right") {
-    const row = Math.floor(countsBefore / sideColumns.length);
-    const col = countsBefore % sideColumns.length;
-    const y = sideRows[Math.min(row, sideRows.length - 1)];
-    const z = sideColumns[col] - Math.max(0, row - 1) * 0.18;
-    return {
-      wall: "right",
-      position: new THREE.Vector3(room.rightX - 0.18, y, z),
-      rotation: new THREE.Euler(0, -Math.PI / 2, tilt),
-      cameraOffset: new THREE.Vector3(-4.35, 0.55, 0.12)
-    };
-  }
-
-  const row = Math.floor(countsBefore / backRows[0].columns.length);
-  const rowConfig = backRows[Math.min(row, backRows.length - 1)];
-  const col = countsBefore % rowConfig.columns.length;
-  const x = rowConfig.columns[col] + Math.max(0, row - 1) * 0.22;
-  const y = rowConfig.y;
+  const area = memory.area || memoryAreas[memory.title] || "sitting";
+  const countsBefore = memories
+    .slice(0, index)
+    .filter((item) => (item.area || memoryAreas[item.title] || "sitting") === area).length;
+  const placement = getApartmentPlacement(area, countsBefore);
   return {
-    wall: "back",
-    position: new THREE.Vector3(x, y, room.backZ + 0.18),
-    rotation: new THREE.Euler(0, 0, tilt),
-    cameraOffset: new THREE.Vector3(0, 0.48, 4.55)
+    wall: area,
+    position: placement.position,
+    rotation: placement.rotation,
+    cameraOffset: placement.cameraOffset
   };
+}
+
+function getApartmentPlacement(area, count) {
+  const placements = {
+    sitting: [
+      { position: new THREE.Vector3(-4.75, 2.15, room.sitting.minZ + 0.18), rotation: new THREE.Euler(0, 0, -0.02), cameraOffset: new THREE.Vector3(0, 0.55, 4.7) },
+      { position: new THREE.Vector3(-1.55, 2.22, room.sitting.minZ + 0.18), rotation: new THREE.Euler(0, 0, 0.01), cameraOffset: new THREE.Vector3(0, 0.55, 4.7) },
+      { position: new THREE.Vector3(1.65, 2.22, room.sitting.minZ + 0.18), rotation: new THREE.Euler(0, 0, -0.01), cameraOffset: new THREE.Vector3(0, 0.55, 4.7) },
+      { position: new THREE.Vector3(4.75, 2.15, room.sitting.minZ + 0.18), rotation: new THREE.Euler(0, 0, 0.02), cameraOffset: new THREE.Vector3(0, 0.55, 4.7) },
+      { position: new THREE.Vector3(room.sitting.minX + 0.18, 2.08, 4.9), rotation: new THREE.Euler(0, Math.PI / 2, 0.01), cameraOffset: new THREE.Vector3(4.5, 0.55, 0) },
+      { position: new THREE.Vector3(room.sitting.maxX - 0.18, 2.08, 4.9), rotation: new THREE.Euler(0, -Math.PI / 2, -0.01), cameraOffset: new THREE.Vector3(-4.5, 0.55, 0) }
+    ],
+    desk: [
+      { position: new THREE.Vector3(room.sitting.minX + 0.18, 2.25, 1.55), rotation: new THREE.Euler(0, Math.PI / 2, 0), cameraOffset: new THREE.Vector3(4.3, 0.55, 0) },
+      { position: new THREE.Vector3(room.sitting.minX + 0.18, 4.12, 2.95), rotation: new THREE.Euler(0, Math.PI / 2, -0.02), cameraOffset: new THREE.Vector3(4.3, 0.4, 0) },
+      { position: new THREE.Vector3(-4.25, 4.35, room.sitting.minZ + 0.18), rotation: new THREE.Euler(0, 0, 0.01), cameraOffset: new THREE.Vector3(0, 0.35, 4.7) },
+      { position: new THREE.Vector3(-2.45, 4.35, room.sitting.minZ + 0.18), rotation: new THREE.Euler(0, 0, -0.01), cameraOffset: new THREE.Vector3(0, 0.35, 4.7) }
+    ],
+    music: [
+      { position: new THREE.Vector3(room.sitting.maxX - 0.18, 2.2, 5.65), rotation: new THREE.Euler(0, -Math.PI / 2, 0.02), cameraOffset: new THREE.Vector3(-4.4, 0.55, 0) },
+      { position: new THREE.Vector3(room.sitting.maxX - 0.18, 4.05, 4.25), rotation: new THREE.Euler(0, -Math.PI / 2, -0.02), cameraOffset: new THREE.Vector3(-4.4, 0.4, 0) },
+      { position: new THREE.Vector3(3.4, 4.32, room.sitting.minZ + 0.18), rotation: new THREE.Euler(0, 0, 0.01), cameraOffset: new THREE.Vector3(0, 0.35, 4.7) }
+    ],
+    bedroom: [
+      { position: new THREE.Vector3(3.05, 2.1, room.bedroom.minZ + 0.18), rotation: new THREE.Euler(0, 0, -0.01), cameraOffset: new THREE.Vector3(0, 0.55, 4.25) },
+      { position: new THREE.Vector3(5.4, 2.16, room.bedroom.minZ + 0.18), rotation: new THREE.Euler(0, 0, 0), cameraOffset: new THREE.Vector3(0, 0.55, 4.25) },
+      { position: new THREE.Vector3(7.65, 2.1, room.bedroom.minZ + 0.18), rotation: new THREE.Euler(0, 0, 0.01), cameraOffset: new THREE.Vector3(0, 0.55, 4.25) },
+      { position: new THREE.Vector3(room.bedroom.maxX - 0.18, 2.42, -3.75), rotation: new THREE.Euler(0, -Math.PI / 2, -0.01), cameraOffset: new THREE.Vector3(-4.25, 0.55, 0) },
+      { position: new THREE.Vector3(room.bedroom.minX + 0.18, 2.35, -3.75), rotation: new THREE.Euler(0, Math.PI / 2, 0.01), cameraOffset: new THREE.Vector3(4.25, 0.55, 0) }
+    ],
+    kitchen: [
+      { position: new THREE.Vector3(-7.55, 2.15, room.kitchen.minZ + 0.18), rotation: new THREE.Euler(0, 0, -0.01), cameraOffset: new THREE.Vector3(0, 0.55, 4.25) },
+      { position: new THREE.Vector3(-5.35, 2.15, room.kitchen.minZ + 0.18), rotation: new THREE.Euler(0, 0, 0), cameraOffset: new THREE.Vector3(0, 0.55, 4.25) },
+      { position: new THREE.Vector3(-3.15, 2.15, room.kitchen.minZ + 0.18), rotation: new THREE.Euler(0, 0, 0.01), cameraOffset: new THREE.Vector3(0, 0.55, 4.25) },
+      { position: new THREE.Vector3(room.kitchen.minX + 0.18, 2.34, -3.05), rotation: new THREE.Euler(0, Math.PI / 2, 0.01), cameraOffset: new THREE.Vector3(4.25, 0.55, 0) }
+    ],
+    balcony: [
+      { position: new THREE.Vector3(-7.35, 2.1, room.balcony.minZ + 0.16), rotation: new THREE.Euler(0, 0, -0.02), cameraOffset: new THREE.Vector3(0, 0.55, 2.45) },
+      { position: new THREE.Vector3(-5.4, 2.16, room.balcony.minZ + 0.16), rotation: new THREE.Euler(0, 0, 0), cameraOffset: new THREE.Vector3(0, 0.55, 2.45) },
+      { position: new THREE.Vector3(-3.45, 2.12, room.balcony.minZ + 0.16), rotation: new THREE.Euler(0, 0, 0.02), cameraOffset: new THREE.Vector3(0, 0.55, 1.65) }
+    ]
+  };
+  const list = placements[area] || placements.sitting;
+  const placement = list[Math.min(count, list.length - 1)];
+  if (count >= list.length) {
+    return {
+      ...placement,
+      position: placement.position.clone().add(new THREE.Vector3(0, 1.35, 0))
+    };
+  }
+  return placement;
 }
 
 function buildHeartField() {
@@ -849,9 +1201,9 @@ function buildHeartField() {
     });
     const heart = new THREE.Mesh(geometry, material);
     heart.position.set(
-      -6.5 + Math.random() * 13,
-      0.15 + Math.random() * 5.2,
-      -4.8 + Math.random() * 9.2
+      -8.5 + Math.random() * 17,
+      0.15 + Math.random() * 5.0,
+      -9 + Math.random() * 15.5
     );
     const scale = 0.035 + Math.random() * 0.09;
     heart.scale.setScalar(scale);
@@ -877,7 +1229,7 @@ function buildChatBeats() {
     });
     const mesh = new THREE.Mesh(new THREE.PlaneGeometry(2.95, 0.76), material);
     const lane = index % 4;
-    mesh.position.set(-5.5 + lane * 3.65, 5.65 + (index % 2) * 0.24, -3.82 + Math.floor(index / 4) * 1.05);
+    mesh.position.set(-6 + lane * 4, 5.34 + (index % 2) * 0.24, -5.75 + Math.floor(index / 4) * 2.08);
     mesh.rotation.x = -0.16;
     mesh.userData.phase = index * 0.6;
     chatGroup.add(mesh);
@@ -885,7 +1237,23 @@ function buildChatBeats() {
 }
 
 function buildLongMessageWall() {
-  const sideSlots = [-4.9, -2.45, 0, 2.45, 4.9];
+  const slots = [
+    { x: room.sitting.minX + 0.18, y: 5.55, z: 1.4, ry: Math.PI / 2 },
+    { x: room.sitting.minX + 0.18, y: 5.55, z: 3.4, ry: Math.PI / 2 },
+    { x: room.sitting.maxX - 0.18, y: 5.55, z: 3.4, ry: -Math.PI / 2 },
+    { x: room.sitting.maxX - 0.18, y: 5.55, z: 5.4, ry: -Math.PI / 2 },
+    { x: room.bedroom.maxX - 0.18, y: 5.55, z: -4.8, ry: -Math.PI / 2 },
+    { x: room.bedroom.minX + 0.18, y: 5.55, z: -4.8, ry: Math.PI / 2 },
+    { x: room.kitchen.minX + 0.18, y: 5.55, z: -4.8, ry: Math.PI / 2 },
+    { x: room.kitchen.maxX - 0.18, y: 5.55, z: -4.8, ry: -Math.PI / 2 },
+    { x: -7.4, y: 4.75, z: room.balcony.minZ + 0.16, ry: 0 },
+    { x: -5.4, y: 4.75, z: room.balcony.minZ + 0.16, ry: 0 },
+    { x: -3.4, y: 4.75, z: room.balcony.minZ + 0.16, ry: 0 },
+    { x: 2.35, y: 5.55, z: room.bedroom.minZ + 0.18, ry: 0 },
+    { x: 5.4, y: 5.55, z: room.bedroom.minZ + 0.18, ry: 0 },
+    { x: -7.4, y: 5.55, z: room.kitchen.minZ + 0.18, ry: 0 },
+    { x: -3.4, y: 5.55, z: room.kitchen.minZ + 0.18, ry: 0 }
+  ];
   wallMessages.forEach((message, index) => {
     const texture = makeTextTexture(message.text, index + 20, 980, 340, {
       fontSize: 24,
@@ -895,18 +1263,13 @@ function buildLongMessageWall() {
     const material = new THREE.MeshBasicMaterial({
       map: texture,
       transparent: true,
-      opacity: 0.94,
+      opacity: 0.62,
       depthWrite: false
     });
-    const mesh = new THREE.Mesh(new THREE.PlaneGeometry(2.18, 0.76), material);
-    const slot = sideSlots[index % sideSlots.length];
-    if (index < sideSlots.length) {
-      mesh.position.set(room.rightX - 0.16, 5.28, slot);
-      mesh.rotation.y = -Math.PI / 2;
-    } else {
-      mesh.position.set(room.leftX + 0.16, 5.28, slot);
-      mesh.rotation.y = Math.PI / 2;
-    }
+    const mesh = new THREE.Mesh(new THREE.PlaneGeometry(1.58, 0.55), material);
+    const slot = slots[index % slots.length];
+    mesh.position.set(slot.x, slot.y, slot.z);
+    mesh.rotation.y = slot.ry;
     mesh.userData.phase = index * 0.5;
     messageGroup.add(mesh);
   });
@@ -1150,17 +1513,17 @@ function showFinalNote() {
   storyPanel.classList.remove("is-open");
   finalNote.classList.add("is-open");
   followSelected = false;
-  targetCamera.position.set(0, 3.25, 8.4);
-  targetCamera.lookAt.set(0, 2.1, -2.3);
+  targetCamera.position.set(0, 4.1, 12.5);
+  targetCamera.lookAt.set(0, 1.7, -1.8);
 }
 
 function updateCameraTargetFromCard(card) {
   card.getWorldPosition(tempWorldPosition);
   tempCameraOffset.copy(card.userData.cameraOffset);
   targetCamera.position.copy(tempWorldPosition).add(tempCameraOffset);
-  targetCamera.position.x = THREE.MathUtils.clamp(targetCamera.position.x, room.leftX + 1.6, room.rightX - 1.6);
-  targetCamera.position.z = THREE.MathUtils.clamp(targetCamera.position.z, -3.95, 7.3);
-  targetCamera.position.y = THREE.MathUtils.clamp(targetCamera.position.y, 1.75, 5.35);
+  targetCamera.position.x = THREE.MathUtils.clamp(targetCamera.position.x, -9.8, 9.8);
+  targetCamera.position.z = THREE.MathUtils.clamp(targetCamera.position.z, -10.2, 9.0);
+  targetCamera.position.y = THREE.MathUtils.clamp(targetCamera.position.y, 1.6, 5.6);
   targetCamera.lookAt.copy(tempWorldPosition);
   targetCamera.lookAt.y += card.userData.memory.featured ? -0.05 : -0.18;
 }
@@ -1219,8 +1582,8 @@ function animate() {
     updateCameraTargetFromCard(cards[selectedIndex]);
   }
 
-  camera.position.lerp(targetCamera.position, 0.035);
-  controls.target.lerp(targetCamera.lookAt, 0.04);
+  camera.position.lerp(targetCamera.position, 0.075);
+  controls.target.lerp(targetCamera.lookAt, 0.085);
 
   cards.forEach((card, index) => {
     const isActive = index === selectedIndex;

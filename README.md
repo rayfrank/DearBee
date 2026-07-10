@@ -1,8 +1,8 @@
 # Bee My Lovely GF
 
-An interactive Three.js love letter and pink memory room for Bee.
+An interactive Three.js love letter and pink apartment of memories for Bee.
 
-The site opens inside a soft virtual room with photo memories on the walls, a Tamambo Restaurant date memory, the Pentagon 5 moment, saved-message panels, Summer Love, and a seamless 270 Degrees Restaurant mural blended into the background wall.
+The site opens inside a soft virtual apartment with a sitting room, desk and laptop corner, music setup, bedroom, kitchen, and balcony. Photo memories are placed room by room, with Tamambo, Pentagon 5, saved-message panels, Summer Love, and a seamless 270 Degrees Restaurant mural blended into the background wall.
 
 ## Local Preview
 
