@@ -344,6 +344,41 @@ const wallMessages = [
     title: "Best relationship",
     text:
       "You can share anything with me and always rely on me to hear you out and do what it takes to give us the best relationship ever."
+  },
+  {
+    title: "Voice note",
+    text:
+      "I enjoy your company, I love talking to you, and you make me feel safe and grounded. I am comfortable around you and your voice soothes me."
+  },
+  {
+    title: "Favorite gifts",
+    text:
+      "My favorite gifts will always be flowers, then wine and chocolates, but what emotionally satisfies me is the cute notes and GitHub links."
+  },
+  {
+    title: "Worth more",
+    text:
+      "I look at you with so much admiration and love because what we have here is worth more than any valuable thing."
+  },
+  {
+    title: "Closer",
+    text:
+      "We came from 270 Degrees to being a degree hotter each time we cuddle and get closer and closer."
+  },
+  {
+    title: "Best friend",
+    text:
+      "Thank you for being my best friend, my partner, my lover, my confidant, my boyfriend, and my handsome man."
+  },
+  {
+    title: "Company",
+    text:
+      "I have kept you good company. If you need company, I am a phone call away."
+  },
+  {
+    title: "RayBee adventures",
+    text:
+      "Here is to RayBee and to many more exciting, fulfilling, fun, and heartwarming adventures. May the Oontz be with us."
   }
 ];
 
@@ -365,7 +400,138 @@ const chatBeats = [
   "You can call this our home too.",
   "Thank you for providing a safe space for me.",
   "Thank you so much for inviting me into your home.",
-  "His and Hers."
+  "His and Hers.",
+  "Your voice soothes me.",
+  "You are my best friend and my life partner.",
+  "Cute notes and GitHub links.",
+  "I spent all morning looking at the GitHub links.",
+  "I am a phone call away if you ever need me.",
+  "I prayed for a love like this.",
+  "This is always a safe space for both of us.",
+  "May the Oontz be with us."
+];
+
+const letterNotes = [
+  {
+    title: "On the desk",
+    text:
+      "Every time I miss you, I visit the GitHub links, read your notes, or look at our gallery. I close my eyes and smile.",
+    x: -4.2,
+    y: -0.31,
+    z: 2.42,
+    w: 0.94,
+    h: 0.58,
+    rotation: { x: -Math.PI / 2, y: 0, z: -0.08 },
+    color: "#fff0de"
+  },
+  {
+    title: "Bedside letter",
+    text:
+      "You make me feel calm and relaxed. I am comfortable around you, and your voice soothes me.",
+    x: 4.3,
+    y: -0.06,
+    z: -4.82,
+    w: 0.82,
+    h: 0.55,
+    rotation: { x: -Math.PI / 2, y: 0, z: 0.18 },
+    color: "#ffdce9"
+  },
+  {
+    title: "Kitchen note",
+    text:
+      "I love indomie. I love herbal teas, lattes and coffee. Little home things count too.",
+    x: -5.42,
+    y: -0.24,
+    z: -2.6,
+    w: 0.76,
+    h: 0.5,
+    rotation: { x: -Math.PI / 2, y: 0, z: -0.2 },
+    color: "#fff7d6"
+  },
+  {
+    title: "Home",
+    text:
+      "You can call this our home too. I enjoyed hosting you very much. If you need my company, I am a phone call away.",
+    x: -5.61,
+    y: 2.55,
+    z: 4.15,
+    w: 0.76,
+    h: 0.52,
+    rotation: { x: 0, y: Math.PI / 2, z: 0.02 },
+    color: "#ffe4ee"
+  },
+  {
+    title: "Gift language",
+    text:
+      "Flowers, wine, chocolates, cute notes, and GitHub links - the little things that say I paid attention.",
+    x: -2.25,
+    y: 0.03,
+    z: 4.34,
+    w: 0.84,
+    h: 0.54,
+    rotation: { x: -Math.PI / 2, y: 0, z: 0.14 },
+    color: "#fff0de"
+  },
+  {
+    title: "Oontz letter",
+    text:
+      "RayBee on the decks. Virtual DJ, laptop, mouse, speakers, and May the Oontz be with us.",
+    x: 4.34,
+    y: -0.25,
+    z: 5.08,
+    w: 0.84,
+    h: 0.52,
+    rotation: { x: -Math.PI / 2, y: 0, z: -0.12 },
+    color: "#e0fffb"
+  },
+  {
+    title: "Balcony letter",
+    text:
+      "I got home safely. Safe journey as you go back home. I love you very much, Ray.",
+    x: -6.7,
+    y: -0.98,
+    z: -8.35,
+    w: 0.84,
+    h: 0.52,
+    rotation: { x: -Math.PI / 2, y: 0, z: 0.08 },
+    color: "#ffe8cf"
+  },
+  {
+    title: "Safe space",
+    text:
+      "Thank you for being nonjudgmental, soft, understanding, and kind. Thank you for holding space for me.",
+    x: 8.61,
+    y: 2.7,
+    z: -2.95,
+    w: 0.78,
+    h: 0.54,
+    rotation: { x: 0, y: -Math.PI / 2, z: -0.02 },
+    color: "#ffdce9"
+  },
+  {
+    title: "Answered prayers",
+    text:
+      "I prayed for a love like this, for a partner like you, and God answered me.",
+    x: 8.61,
+    y: 4.05,
+    z: -4.65,
+    w: 0.78,
+    h: 0.54,
+    rotation: { x: 0, y: -Math.PI / 2, z: 0.02 },
+    color: "#fff7d6"
+  },
+  {
+    title: "RayBee",
+    text:
+      "Here is to many more exciting, fulfilling, fun, and heartwarming adventures.",
+    x: -0.92,
+    y: -0.34,
+    z: 4.55,
+    w: 0.74,
+    h: 0.48,
+    rotation: { x: -Math.PI / 2, y: 0, z: 0.24 },
+    color: "#ffe4ee"
+  }
 ];
 
 const pentagonNames = ["Ray", "Bee", "Mike", "Mel", "Qwarra"];
@@ -432,8 +598,9 @@ const heartField = new THREE.Group();
 const chatGroup = new THREE.Group();
 const pentagonGroup = new THREE.Group();
 const messageGroup = new THREE.Group();
+const noteGroup = new THREE.Group();
 const roomGroup = new THREE.Group();
-scene.add(roomGroup, gallery, heartField, chatGroup, pentagonGroup, messageGroup);
+scene.add(roomGroup, gallery, heartField, chatGroup, pentagonGroup, messageGroup, noteGroup);
 
 let selectedIndex = 0;
 let hoveredCard = null;
@@ -523,6 +690,8 @@ function buildMemoryRoom() {
   buildBedroomRoom();
   buildKitchenRoom();
   buildBalconyRoom();
+  buildRealisticDetails();
+  buildLettersAndNotes();
 }
 
 function makeRoomMaterial(color, options = {}) {
@@ -545,6 +714,32 @@ function addBox(width, height, depth, color, x, y, z, options = {}) {
   mesh.position.set(x, y, z);
   if (options.rotation) {
     mesh.rotation.set(options.rotation.x || 0, options.rotation.y || 0, options.rotation.z || 0);
+  }
+  roomGroup.add(mesh);
+  return mesh;
+}
+
+function addCylinder(radiusTop, radiusBottom, height, color, x, y, z, options = {}) {
+  const mesh = new THREE.Mesh(
+    new THREE.CylinderGeometry(radiusTop, radiusBottom, height, options.segments || 24),
+    makeRoomMaterial(color, options)
+  );
+  mesh.position.set(x, y, z);
+  if (options.rotation) {
+    mesh.rotation.set(options.rotation.x || 0, options.rotation.y || 0, options.rotation.z || 0);
+  }
+  roomGroup.add(mesh);
+  return mesh;
+}
+
+function addSphere(radius, color, x, y, z, options = {}) {
+  const mesh = new THREE.Mesh(
+    new THREE.SphereGeometry(radius, options.widthSegments || 24, options.heightSegments || 16),
+    makeRoomMaterial(color, options)
+  );
+  mesh.position.set(x, y, z);
+  if (options.scale) {
+    mesh.scale.set(options.scale.x || 1, options.scale.y || 1, options.scale.z || 1);
   }
   roomGroup.add(mesh);
   return mesh;
@@ -717,8 +912,8 @@ function buildBedroomRoom() {
   addBox(1.25, 2.35, 0.62, 0x6f4635, 8.05, 0.05, -2.8, { roughness: 0.54 });
   addBox(0.06, 2.2, 0.04, 0xffd18b, 8.05, 0.08, -2.45, { roughness: 0.32, metalness: 0.32 });
   for (let i = 0; i < 3; i += 1) {
-    addBox(1.5, 0.08, 0.38, 0x704737, 2.55, 0.32 + i * 0.62, -5.15, { roughness: 0.5 });
-    addBox(0.24, 0.36, 0.22, i % 2 ? 0xffd18b : 0xff9fc0, 2.05 + i * 0.32, 0.55 + i * 0.62, -5.15, { roughness: 0.66 });
+    addBox(0.38, 0.08, 1.5, 0x704737, 2.3, 0.32 + i * 0.62, -4.55, { roughness: 0.5 });
+    addBox(0.18, 0.36, 0.22, i % 2 ? 0xffd18b : 0xff9fc0, 2.34, 0.55 + i * 0.62, -5.05 + i * 0.34, { roughness: 0.66 });
   }
 }
 
@@ -751,6 +946,219 @@ function buildBalconyRoom() {
   );
   city.position.set(-5.4, 2.2, room.balcony.minZ - 0.04);
   roomGroup.add(city);
+}
+
+function buildRealisticDetails() {
+  buildShellDetails();
+  buildSittingRoomDetails();
+  buildDeskDetails();
+  buildMusicDetails();
+  buildBedroomDetails();
+  buildKitchenDetails();
+  buildBalconyDetails();
+}
+
+function buildShellDetails() {
+  const trimColor = 0xffb7cf;
+  const darkTrim = 0x241822;
+  addBox(11.5, 0.08, 0.08, trimColor, 0, room.floorY + 0.18, room.sitting.minZ + 0.12, { roughness: 0.54 });
+  addBox(0.08, 0.08, 6.4, trimColor, room.sitting.minX + 0.12, room.floorY + 0.18, 3.7, { roughness: 0.54 });
+  addBox(0.08, 0.08, 6.4, trimColor, room.sitting.maxX - 0.12, room.floorY + 0.18, 3.7, { roughness: 0.54 });
+  addBox(6.5, 0.08, 0.08, trimColor, 5.4, room.floorY + 0.18, room.bedroom.minZ + 0.12, { roughness: 0.54 });
+  addBox(6.5, 0.08, 0.08, trimColor, -5.4, room.floorY + 0.18, room.kitchen.minZ + 0.12, { roughness: 0.54 });
+  addBox(2.8, 0.04, 0.22, 0xffd18b, 4.6, room.floorY + 0.12, room.bedroom.maxZ + 0.05, { roughness: 0.44 });
+  addBox(2.8, 0.04, 0.22, 0xffd18b, -4.6, room.floorY + 0.12, room.kitchen.maxZ + 0.05, { roughness: 0.44 });
+  addBox(0.08, 2.9, 0.08, darkTrim, 2.04, 0.25, 0.42, { roughness: 0.48 });
+  addBox(0.08, 2.9, 0.08, darkTrim, 8.74, 0.25, 0.42, { roughness: 0.48 });
+  addBox(0.08, 2.9, 0.08, darkTrim, -2.04, 0.25, 0.42, { roughness: 0.48 });
+  addBox(0.08, 2.9, 0.08, darkTrim, -8.74, 0.25, 0.42, { roughness: 0.48 });
+  addBox(6.4, 0.08, 0.08, darkTrim, 5.4, 1.73, 0.42, { roughness: 0.48 });
+  addBox(6.4, 0.08, 0.08, darkTrim, -5.4, 1.73, 0.42, { roughness: 0.48 });
+
+  for (let i = 0; i < 8; i += 1) {
+    addBox(0.018, 0.018, 6.35, 0x5f3c4d, room.sitting.minX + 1.25 + i * 1.25, room.floorY + 0.115, 3.7, {
+      roughness: 0.78,
+      opacity: 0.42
+    });
+  }
+  for (let i = 0; i < 5; i += 1) {
+    addBox(6.55, 0.018, 0.018, 0x54405d, -5.4, room.floorY + 0.12, room.kitchen.minZ + 1.0 + i * 1.05, {
+      roughness: 0.78,
+      opacity: 0.36
+    });
+    addBox(6.55, 0.018, 0.018, 0x4a3a52, 5.4, room.floorY + 0.12, room.bedroom.minZ + 1.0 + i * 1.05, {
+      roughness: 0.78,
+      opacity: 0.32
+    });
+  }
+
+  [
+    [0, 5.95, 0xff9fc0],
+    [-5.4, -2.6, 0xffd18b],
+    [5.4, -2.6, 0xff9fc0]
+  ].forEach(([x, z, color]) => {
+    addCylinder(0.42, 0.34, 0.34, color, x, room.height - 1.52, z, {
+      roughness: 0.5,
+      opacity: 0.68,
+      emissive: color,
+      emissiveIntensity: 0.18
+    });
+    addCylinder(0.04, 0.04, 0.42, 0x30202d, x, room.height - 1.24, z, { roughness: 0.4 });
+  });
+}
+
+function buildSittingRoomDetails() {
+  addBox(3.8, 0.035, 2.35, 0x244a50, -1.35, room.floorY + 0.13, 4.85, {
+    roughness: 0.9,
+    emissive: 0x06181a,
+    emissiveIntensity: 0.12
+  });
+  for (let i = 0; i < 4; i += 1) {
+    addBox(3.45, 0.012, 0.035, 0xff9fc0, -1.35, room.floorY + 0.16, 3.95 + i * 0.58, {
+      roughness: 0.82,
+      opacity: 0.42
+    });
+  }
+  addBox(0.78, 0.12, 0.78, 0x7b4c39, -4.85, -0.5, 5.28, { roughness: 0.48 });
+  addCylinder(0.035, 0.035, 0.75, 0x2a2028, -4.85, -0.1, 5.28, { roughness: 0.42 });
+  addCylinder(0.34, 0.46, 0.5, 0xffb7cf, -4.85, 0.42, 5.28, {
+    roughness: 0.62,
+    emissive: 0xff6fa5,
+    emissiveIntensity: 0.34
+  });
+  addBox(0.46, 0.52, 0.13, 0xffe1ef, -2.9, -0.08, 6.13, { roughness: 0.86 });
+  addBox(0.62, 0.08, 0.92, 0x7fd1c9, -2.12, -0.34, 5.48, { roughness: 0.88, opacity: 0.58 });
+  addCylinder(0.15, 0.13, 0.24, 0xfff0de, -0.55, -0.26, 4.14, { roughness: 0.58, opacity: 0.78 });
+  addCylinder(0.11, 0.09, 0.06, 0x9b6a3a, -0.55, -0.1, 4.14, { roughness: 0.4 });
+  addCylinder(0.28, 0.22, 0.42, 0x4a3435, 1.9, -0.94, 5.95, { roughness: 0.68 });
+  addSphere(0.28, 0x5fae73, 1.8, -0.52, 5.9, { scale: { x: 1.35, y: 0.55, z: 0.45 }, roughness: 0.78 });
+  addSphere(0.24, 0x70a870, 2.03, -0.38, 6.05, { scale: { x: 0.62, y: 1.2, z: 0.45 }, roughness: 0.78 });
+}
+
+function buildDeskDetails() {
+  addBox(1.2, 0.035, 0.42, 0x202733, -4.35, -0.22, 2.56, { roughness: 0.52 });
+  addBox(0.04, 0.035, 0.42, 0xff9fc0, -4.0, -0.18, 2.56, { roughness: 0.42, emissive: 0x3a0617, emissiveIntensity: 0.22 });
+  addBox(0.04, 0.035, 0.42, 0x70d6d0, -4.18, -0.18, 2.56, { roughness: 0.42, emissive: 0x062726, emissiveIntensity: 0.22 });
+  addCylinder(0.11, 0.1, 0.22, 0xfff0de, -5.0, -0.28, 2.18, { roughness: 0.58 });
+  addBox(0.46, 0.04, 0.62, 0xfff0de, -4.9, -0.31, 2.7, { roughness: 0.86, opacity: 0.9 });
+  addBox(0.42, 0.03, 0.08, 0xff9fc0, -4.92, -0.28, 2.55, { roughness: 0.7, opacity: 0.9 });
+  addBox(0.48, 0.02, 0.05, 0x141821, -4.35, -0.18, 1.7, { roughness: 0.4 });
+  addBox(0.03, 0.03, 0.86, 0x0e1016, -4.02, -0.35, 2.13, { roughness: 0.4, rotation: { y: 0.2 } });
+  for (let i = 0; i < 4; i += 1) {
+    addSphere(0.1, 0x202027, -4.78 + i * 0.28, -1.06, 3.76, { scale: { x: 1, y: 0.28, z: 1 }, roughness: 0.42 });
+  }
+}
+
+function buildMusicDetails() {
+  addBox(1.18, 0.08, 0.48, 0x1a1d26, 4.35, -0.24, 5.14, { roughness: 0.36, metalness: 0.16 });
+  for (let i = 0; i < 6; i += 1) {
+    addCylinder(0.035, 0.035, 0.018, i % 2 ? 0xff9fc0 : 0x70d6d0, 3.88 + i * 0.18, -0.18, 4.93, {
+      segments: 14,
+      rotation: { x: Math.PI / 2 },
+      roughness: 0.34,
+      emissive: i % 2 ? 0x3a0617 : 0x062726,
+      emissiveIntensity: 0.45
+    });
+  }
+  [-0.78, 0.78].forEach((offset) => {
+    addCylinder(0.23, 0.23, 0.035, 0x2a2d34, 4.35 + offset, -0.18, 5.47, {
+      segments: 28,
+      rotation: { x: Math.PI / 2 },
+      roughness: 0.28,
+      metalness: 0.18
+    });
+    addCylinder(0.11, 0.11, 0.04, 0x0b0d12, 4.35 + offset, -0.18, 5.44, {
+      segments: 28,
+      rotation: { x: Math.PI / 2 },
+      roughness: 0.36
+    });
+  });
+  addBox(2.15, 0.035, 0.05, 0x70d6d0, 4.35, 0.36, 5.98, {
+    roughness: 0.3,
+    emissive: 0x0b3836,
+    emissiveIntensity: 0.72
+  });
+}
+
+function buildBedroomDetails() {
+  addBox(3.05, 0.1, 1.95, 0xf9d3e3, 5.2, -0.33, -4.05, { roughness: 0.9, opacity: 0.68 });
+  addBox(0.68, 0.2, 0.46, 0xfff0de, 4.2, -0.05, -5.06, { roughness: 0.88 });
+  addBox(0.68, 0.2, 0.46, 0xffd18b, 6.22, -0.05, -5.06, { roughness: 0.88 });
+  addBox(1.0, 0.14, 0.72, 0x7b4c39, 7.25, -0.5, -5.18, { roughness: 0.48 });
+  addCylinder(0.12, 0.12, 0.2, 0xfff0de, 7.0, -0.32, -5.08, { roughness: 0.58 });
+  addBox(0.42, 0.05, 0.54, 0x141821, 7.45, -0.32, -5.2, { roughness: 0.38, metalness: 0.18 });
+  addBox(0.66, 1.78, 0.04, 0x1a2630, 8.02, 0.06, -2.44, { roughness: 0.18, metalness: 0.54, opacity: 0.68 });
+  addBox(0.04, 2.26, 0.07, 0xffd18b, 7.42, 0.06, -2.46, { roughness: 0.34, metalness: 0.36 });
+  addBox(0.04, 2.26, 0.07, 0xffd18b, 8.66, 0.06, -2.46, { roughness: 0.34, metalness: 0.36 });
+  for (let i = 0; i < 4; i += 1) {
+    addBox(0.16, 0.34 + (i % 2) * 0.18, 0.18, i % 2 ? 0x70d6d0 : 0xff9fc0, 2.34, 1.48, -5.05 + i * 0.28, {
+      roughness: 0.66
+    });
+  }
+}
+
+function buildKitchenDetails() {
+  addBox(3.4, 0.1, 0.08, 0xf2e3da, -5.4, 0.4, -5.18, { roughness: 0.82, opacity: 0.56 });
+  for (let i = 0; i < 5; i += 1) {
+    addBox(0.03, 0.1, 0.09, 0xff9fc0, -7.0 + i * 0.8, 0.41, -5.14, { roughness: 0.72, opacity: 0.5 });
+  }
+  addBox(0.8, 0.06, 0.46, 0xd7ced5, -5.78, -0.22, -5.04, { roughness: 0.22, metalness: 0.44 });
+  addCylinder(0.035, 0.035, 0.34, 0xd7ced5, -5.78, 0.02, -5.04, { segments: 16, roughness: 0.18, metalness: 0.5 });
+  addCylinder(0.035, 0.035, 0.42, 0xd7ced5, -5.63, 0.18, -5.02, {
+    segments: 16,
+    rotation: { z: Math.PI / 2 },
+    roughness: 0.18,
+    metalness: 0.5
+  });
+  addBox(0.72, 0.04, 0.4, 0x141821, -4.52, -0.12, -5.03, { roughness: 0.36, metalness: 0.22 });
+  for (let i = 0; i < 3; i += 1) {
+    addCylinder(0.045, 0.045, 0.02, 0xffd18b, -4.75 + i * 0.22, -0.08, -5.02, {
+      segments: 18,
+      roughness: 0.24,
+      emissive: 0x3b1b07,
+      emissiveIntensity: 0.25
+    });
+  }
+  addBox(0.52, 0.2, 0.38, 0xfff0de, -5.4, -0.2, -2.53, { roughness: 0.8 });
+  addBox(0.34, 0.1, 0.42, 0xd94c78, -5.08, -0.11, -2.54, { roughness: 0.8 });
+  addCylinder(0.23, 0.18, 0.4, 0x5fae73, -7.75, -0.34, -2.15, { roughness: 0.72 });
+  addSphere(0.27, 0x70a870, -7.72, 0.06, -2.15, { scale: { x: 1.25, y: 0.55, z: 0.5 }, roughness: 0.82 });
+}
+
+function buildBalconyDetails() {
+  addBox(5.85, 0.05, 0.05, 0x70d6d0, -5.4, -0.22, -9.45, {
+    roughness: 0.28,
+    metalness: 0.42,
+    emissive: 0x062726,
+    emissiveIntensity: 0.32
+  });
+  for (let i = 0; i < 5; i += 1) {
+    addSphere(0.05, 0xffd18b, -7.6 + i * 1.1, 0.08, -9.42, {
+      roughness: 0.34,
+      emissive: 0x3b1b07,
+      emissiveIntensity: 0.65
+    });
+  }
+  addBox(1.1, 0.08, 0.86, 0x7b4c39, -5.4, -0.78, -8.18, { roughness: 0.5 });
+  addCylinder(0.1, 0.1, 0.22, 0xfff0de, -5.62, -0.62, -8.12, { roughness: 0.58 });
+  addBox(0.38, 0.04, 0.48, 0xffe1ef, -5.18, -0.63, -8.15, { roughness: 0.82 });
+}
+
+function buildLettersAndNotes() {
+  letterNotes.forEach((note, index) => {
+    const material = new THREE.MeshBasicMaterial({
+      map: makeLetterTexture(note.title, note.text, index, note.color),
+      transparent: true,
+      opacity: 0.94,
+      side: THREE.DoubleSide,
+      depthWrite: false
+    });
+    const mesh = new THREE.Mesh(new THREE.PlaneGeometry(note.w, note.h), material);
+    mesh.position.set(note.x, note.y, note.z);
+    mesh.rotation.set(note.rotation.x || 0, note.rotation.y || 0, note.rotation.z || 0);
+    mesh.userData.phase = index * 0.45;
+    noteGroup.add(mesh);
+  });
 }
 
 function buildApartmentWayfinding() {
@@ -1420,6 +1828,54 @@ function makeTextTexture(text, seed, width = 860, height = 230, options = {}) {
   ctx.fillStyle = "#fff7ec";
   ctx.font = `700 ${options.fontSize || 34}px Inter, Arial, sans-serif`;
   wrapCanvasText(ctx, text, 36, textY, width - 72, options.lineHeight || 42, height - 34);
+  const texture = new THREE.CanvasTexture(canvasEl);
+  texture.colorSpace = THREE.SRGBColorSpace;
+  return texture;
+}
+
+function makeLetterTexture(title, text, seed, paperColor = "#fff0de") {
+  const pixelRatio = 2;
+  const width = 840;
+  const height = 540;
+  const canvasEl = document.createElement("canvas");
+  canvasEl.width = width * pixelRatio;
+  canvasEl.height = height * pixelRatio;
+  const ctx = canvasEl.getContext("2d");
+  ctx.scale(pixelRatio, pixelRatio);
+  ctx.clearRect(0, 0, width, height);
+
+  const gradient = ctx.createLinearGradient(0, 0, width, height);
+  gradient.addColorStop(0, paperColor);
+  gradient.addColorStop(1, seed % 2 ? "#ffdbe9" : "#fff8ed");
+  ctx.fillStyle = gradient;
+  roundedRect(ctx, 0, 0, width, height, 28);
+  ctx.fill();
+
+  ctx.strokeStyle = "rgba(126, 73, 96, 0.28)";
+  ctx.lineWidth = 5;
+  roundedRect(ctx, 8, 8, width - 16, height - 16, 24);
+  ctx.stroke();
+
+  ctx.fillStyle = "rgba(255, 159, 192, 0.34)";
+  ctx.fillRect(62, 132, width - 124, 3);
+  for (let y = 184; y < height - 54; y += 44) {
+    ctx.fillStyle = "rgba(126, 73, 96, 0.13)";
+    ctx.fillRect(62, y, width - 124, 2);
+  }
+
+  ctx.fillStyle = "#7b3c57";
+  ctx.font = "900 38px Georgia, 'Times New Roman', serif";
+  ctx.fillText(title, 62, 88);
+
+  ctx.fillStyle = "#4a2d38";
+  ctx.font = "700 31px Inter, Arial, sans-serif";
+  wrapCanvasText(ctx, text, 62, 168, width - 124, 39, height - 74);
+
+  ctx.fillStyle = "rgba(217, 76, 120, 0.42)";
+  ctx.font = "800 28px Inter, Arial, sans-serif";
+  ctx.textAlign = "right";
+  ctx.fillText("RayBee", width - 62, height - 36);
+
   const texture = new THREE.CanvasTexture(canvasEl);
   texture.colorSpace = THREE.SRGBColorSpace;
   return texture;
