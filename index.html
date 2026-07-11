@@ -5,11 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="A detailed soft pink interactive apartment of memories for Bee: sitting room, desk, music corner, bedroom, kitchen, balcony, flowers, notes, letters, calls, and RayBee messages."
+      content="A detailed soft pink walkable apartment of memories for Bee: sitting room, desk, music corner, bedroom, kitchen, balcony, flowers, notes, letters, calls, and RayBee messages."
     />
     <title>Bee, My Lovely GF</title>
     <link rel="icon" href="data:," />
-    <link rel="stylesheet" href="styles.css?v=room-20260711a" />
+    <link rel="stylesheet" href="styles.css?v=walk-20260711a" />
     <script type="importmap">
       {
         "imports": {
@@ -29,9 +29,9 @@
         <p class="eyebrow">Tamambo, 3 Step Theory, and everything after</p>
         <h1>Bee, my lovely gf</h1>
         <p class="intro-copy">
-          A more detailed soft pink apartment for our dates, calls, desk
-          notes, letters, flowers, Oontz, kitchen comforts, balcony air, long
-          messages, and every little memory that still feels close.
+          A soft pink apartment you can walk through with Bee: the sitting
+          room, desk, music corner, bedroom, kitchen, balcony, notes, flowers,
+          Oontz, long messages, and every little memory that still feels close.
         </p>
         <button class="primary-action" id="beginBtn" type="button">
           Begin
@@ -40,7 +40,7 @@
 
       <section class="topbar" aria-label="Memory controls">
         <div>
-          <p class="mini-label">Now orbiting</p>
+          <p class="mini-label" id="movementStatus">Walking with Bee</p>
           <h2 id="currentTitle">The first spark</h2>
         </div>
         <div class="control-row">
@@ -60,6 +60,15 @@
             Summer Love
           </button>
         </div>
+      </section>
+
+      <section class="mobile-walk-controls" id="mobileWalkControls" aria-label="Walk controls">
+        <div class="joystick" id="joystick" aria-label="Move Bee" role="application">
+          <span class="joystick-knob" id="joystickKnob" aria-hidden="true"></span>
+        </div>
+        <button class="walk-action" id="interactBtn" type="button" aria-label="Open nearby memory">
+          View
+        </button>
       </section>
 
       <aside class="story-panel" id="storyPanel" aria-label="Selected memory">
@@ -145,6 +154,6 @@
       </section>
     </main>
 
-    <script type="module" src="app.js?v=room-20260711a"></script>
+    <script type="module" src="app.js?v=walk-20260711a"></script>
   </body>
 </html>

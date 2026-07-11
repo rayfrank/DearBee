@@ -546,8 +546,38 @@ const room = {
   balcony: { minX: -8.8, maxX: -2.0, minZ: -9.5, maxZ: -6.2 }
 };
 
+const walkZones = [
+  { minX: -5.25, maxX: 5.25, minZ: 0.55, maxZ: 6.28 },
+  { minX: -5.25, maxX: -2.35, minZ: -0.98, maxZ: 1.55 },
+  { minX: 2.35, maxX: 5.25, minZ: -0.98, maxZ: 1.55 },
+  { minX: -8.18, maxX: -2.42, minZ: -5.88, maxZ: 0.1 },
+  { minX: 2.42, maxX: 8.18, minZ: -5.88, maxZ: 0.1 },
+  { minX: -8.1, maxX: -2.7, minZ: -8.92, maxZ: -5.0 }
+];
+
+const cameraZones = [
+  { minX: -5.65, maxX: 5.65, minZ: 0.48, maxZ: 6.82 },
+  { minX: -8.55, maxX: -2.05, minZ: -5.95, maxZ: 0.48 },
+  { minX: 2.05, maxX: 8.55, minZ: -5.95, maxZ: 0.48 },
+  { minX: -8.55, maxX: -2.05, minZ: -9.18, maxZ: -5.95 }
+];
+
+const furnitureColliders = [
+  { minX: -4.25, maxX: 1.28, minZ: 5.03, maxZ: 6.62 },
+  { minX: -2.8, maxX: 0.12, minZ: 3.65, maxZ: 4.98 },
+  { minX: -5.65, maxX: -3.05, minZ: 1.68, maxZ: 3.68 },
+  { minX: 3.05, maxX: 5.65, minZ: 4.22, maxZ: 6.08 },
+  { minX: 3.26, maxX: 7.08, minZ: -5.58, maxZ: -2.9 },
+  { minX: 7.42, maxX: 8.62, minZ: -3.45, maxZ: -2.04 },
+  { minX: -8.42, maxX: -2.92, minZ: -5.78, maxZ: -4.64 },
+  { minX: -6.38, maxX: -4.62, minZ: -3.22, maxZ: -1.96 },
+  { minX: -8.42, maxX: -7.62, minZ: -8.75, maxZ: -7.95 },
+  { minX: -3.18, maxX: -2.38, minZ: -8.75, maxZ: -7.95 }
+];
+
 const canvas = document.querySelector("#love-scene");
 const intro = document.querySelector("#intro");
+const movementStatus = document.querySelector("#movementStatus");
 const currentTitle = document.querySelector("#currentTitle");
 const storyPanel = document.querySelector("#storyPanel");
 const storyImage = document.querySelector("#storyImage");
@@ -563,6 +593,9 @@ const finalBtn = document.querySelector("#finalBtn");
 const musicBtn = document.querySelector("#musicBtn");
 const closeStory = document.querySelector("#closeStory");
 const closeFinal = document.querySelector("#closeFinal");
+const joystick = document.querySelector("#joystick");
+const joystickKnob = document.querySelector("#joystickKnob");
+const interactBtn = document.querySelector("#interactBtn");
 
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x120b12);
@@ -570,6 +603,7 @@ scene.fog = new THREE.FogExp2(0x160f18, 0.017);
 
 const camera = new THREE.PerspectiveCamera(48, window.innerWidth / window.innerHeight, 0.1, 100);
 camera.position.set(0, 4.1, 15.5);
+applyResponsiveCamera();
 
 const renderer = new THREE.WebGLRenderer({
   canvas,
@@ -591,6 +625,7 @@ controls.maxDistance = 25;
 controls.maxPolarAngle = Math.PI * 0.62;
 controls.minPolarAngle = Math.PI * 0.2;
 controls.target.set(0, 1.65, -0.9);
+controls.enabled = false;
 
 const textureLoader = new THREE.TextureLoader();
 const gallery = new THREE.Group();
@@ -600,19 +635,45 @@ const pentagonGroup = new THREE.Group();
 const messageGroup = new THREE.Group();
 const noteGroup = new THREE.Group();
 const roomGroup = new THREE.Group();
-scene.add(roomGroup, gallery, heartField, chatGroup, pentagonGroup, messageGroup, noteGroup);
+const avatarGroup = new THREE.Group();
+scene.add(roomGroup, gallery, heartField, chatGroup, pentagonGroup, messageGroup, noteGroup, avatarGroup);
 
 let selectedIndex = 0;
 let hoveredCard = null;
+let nearbyCard = null;
 let started = false;
 let pentagonMode = false;
-let followSelected = true;
+let followSelected = false;
+let cameraMode = "walk";
 const cards = [];
+const pressedKeys = new Set();
 const pointer = new THREE.Vector2();
 const raycaster = new THREE.Raycaster();
 const clock = new THREE.Clock();
 const tempWorldPosition = new THREE.Vector3();
 const tempCameraOffset = new THREE.Vector3();
+const tempQuaternion = new THREE.Quaternion();
+const tempNormal = new THREE.Vector3();
+const moveVector = new THREE.Vector3();
+const forwardVector = new THREE.Vector3();
+const rightVector = new THREE.Vector3();
+const proposedPosition = new THREE.Vector3();
+
+const avatar = {
+  group: avatarGroup,
+  parts: {},
+  radius: 0.34,
+  speed: 2.85,
+  heading: Math.PI,
+  walkCycle: 0,
+  isMoving: false
+};
+
+const joystickState = {
+  pointerId: null,
+  x: 0,
+  y: 0
+};
 
 const targetCamera = {
   position: camera.position.clone(),
@@ -635,25 +696,37 @@ audio.addEventListener("error", () => {
 
 buildLights();
 buildMemoryRoom();
+buildAvatar();
 buildGallery();
 buildHeartField();
 buildChatBeats();
 buildLongMessageWall();
 buildPentagon();
+setAvatarPosition(1.85, 3.45);
+updateWalkCamera(true);
 focusMemory(0, false);
+setupJoystick();
 
 beginBtn.addEventListener("click", beginExperience);
-prevBtn.addEventListener("click", () => focusMemory(selectedIndex - 1));
-nextBtn.addEventListener("click", () => focusMemory(selectedIndex + 1));
-pentagonBtn.addEventListener("click", () => focusMemory(memories.findIndex((memory) => memory.pentagon)));
+prevBtn.addEventListener("click", () => focusMemory(selectedIndex - 1, true, true));
+nextBtn.addEventListener("click", () => focusMemory(selectedIndex + 1, true, true));
+pentagonBtn.addEventListener("click", () => focusMemory(memories.findIndex((memory) => memory.pentagon), true, true));
 finalBtn.addEventListener("click", showFinalNote);
 musicBtn.addEventListener("click", toggleMusic);
-closeStory.addEventListener("click", () => storyPanel.classList.remove("is-open"));
-closeFinal.addEventListener("click", () => finalNote.classList.remove("is-open"));
+interactBtn.addEventListener("click", openNearbyMemory);
+closeStory.addEventListener("click", () => {
+  storyPanel.classList.remove("is-open");
+  cameraMode = "walk";
+});
+closeFinal.addEventListener("click", () => {
+  finalNote.classList.remove("is-open");
+  cameraMode = "walk";
+});
 window.addEventListener("resize", onResize);
 window.addEventListener("pointermove", onPointerMove);
 window.addEventListener("click", onSceneClick);
 window.addEventListener("keydown", onKeydown);
+window.addEventListener("keyup", onKeyup);
 
 renderer.setAnimationLoop(animate);
 
@@ -743,6 +816,137 @@ function addSphere(radius, color, x, y, z, options = {}) {
   }
   roomGroup.add(mesh);
   return mesh;
+}
+
+function buildAvatar() {
+  const skin = makeRoomMaterial(0x8c5f4c, { roughness: 0.58 });
+  const hair = makeRoomMaterial(0x171018, { roughness: 0.7 });
+  const blush = makeRoomMaterial(0xff9fc0, { roughness: 0.7, emissive: 0x1f0610, emissiveIntensity: 0.18 });
+  const cream = makeRoomMaterial(0xfff0de, { roughness: 0.8 });
+  const denim = makeRoomMaterial(0x2f4058, { roughness: 0.66 });
+  const shoe = makeRoomMaterial(0xf5d5df, { roughness: 0.6 });
+  const glass = makeRoomMaterial(0x70d6d0, { roughness: 0.25, metalness: 0.4, emissive: 0x062827, emissiveIntensity: 0.2 });
+  const dark = makeRoomMaterial(0x161018, { roughness: 0.44 });
+
+  const shadow = new THREE.Mesh(
+    new THREE.CircleGeometry(0.62, 40),
+    new THREE.MeshBasicMaterial({ color: 0x000000, transparent: true, opacity: 0.28, depthWrite: false })
+  );
+  shadow.rotation.x = -Math.PI / 2;
+  shadow.position.y = 0.018;
+  avatarGroup.add(shadow);
+
+  const body = new THREE.Mesh(new THREE.CylinderGeometry(0.28, 0.36, 0.82, 24), blush);
+  body.position.y = 0.95;
+  avatarGroup.add(body);
+  avatar.parts.body = body;
+
+  const collar = new THREE.Mesh(new THREE.BoxGeometry(0.55, 0.08, 0.16), cream);
+  collar.position.set(0, 1.36, 0.18);
+  avatarGroup.add(collar);
+
+  const neck = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.13, 0.18, 18), skin);
+  neck.position.y = 1.43;
+  avatarGroup.add(neck);
+
+  const head = new THREE.Mesh(new THREE.SphereGeometry(0.31, 32, 24), skin);
+  head.position.y = 1.72;
+  head.scale.set(0.92, 1.06, 0.9);
+  avatarGroup.add(head);
+  avatar.parts.head = head;
+
+  const hairCap = new THREE.Mesh(new THREE.SphereGeometry(0.33, 32, 18), hair);
+  hairCap.position.set(0, 1.82, -0.02);
+  hairCap.scale.set(1.0, 0.72, 1.04);
+  avatarGroup.add(hairCap);
+
+  const hairBack = new THREE.Mesh(new THREE.SphereGeometry(0.26, 24, 18), hair);
+  hairBack.position.set(0, 1.55, -0.22);
+  hairBack.scale.set(1.0, 1.25, 0.72);
+  avatarGroup.add(hairBack);
+
+  const glassesLeft = new THREE.Mesh(new THREE.TorusGeometry(0.084, 0.01, 8, 24), glass);
+  glassesLeft.position.set(-0.095, 1.74, 0.265);
+  avatarGroup.add(glassesLeft);
+  const glassesRight = glassesLeft.clone();
+  glassesRight.position.x = 0.095;
+  avatarGroup.add(glassesRight);
+  const bridge = new THREE.Mesh(new THREE.BoxGeometry(0.09, 0.014, 0.018), glass);
+  bridge.position.set(0, 1.74, 0.27);
+  avatarGroup.add(bridge);
+
+  const smile = new THREE.Mesh(new THREE.TorusGeometry(0.07, 0.007, 8, 20, Math.PI), dark);
+  smile.position.set(0, 1.63, 0.285);
+  smile.rotation.z = Math.PI;
+  avatarGroup.add(smile);
+
+  const armGeometry = new THREE.CylinderGeometry(0.055, 0.06, 0.72, 16);
+  const leftArm = new THREE.Mesh(armGeometry, skin);
+  leftArm.position.set(-0.38, 0.98, 0.02);
+  leftArm.rotation.z = -0.2;
+  avatarGroup.add(leftArm);
+  avatar.parts.leftArm = leftArm;
+
+  const rightArm = new THREE.Mesh(armGeometry, skin);
+  rightArm.position.set(0.38, 0.98, 0.02);
+  rightArm.rotation.z = 0.2;
+  avatarGroup.add(rightArm);
+  avatar.parts.rightArm = rightArm;
+
+  const leftHand = new THREE.Mesh(new THREE.SphereGeometry(0.075, 18, 14), skin);
+  leftHand.position.set(-0.46, 0.62, 0.03);
+  avatarGroup.add(leftHand);
+  avatar.parts.leftHand = leftHand;
+
+  const rightHand = leftHand.clone();
+  rightHand.position.x = 0.46;
+  avatarGroup.add(rightHand);
+  avatar.parts.rightHand = rightHand;
+
+  const legGeometry = new THREE.CylinderGeometry(0.075, 0.085, 0.72, 16);
+  const leftLeg = new THREE.Mesh(legGeometry, denim);
+  leftLeg.position.set(-0.13, 0.36, 0);
+  avatarGroup.add(leftLeg);
+  avatar.parts.leftLeg = leftLeg;
+
+  const rightLeg = new THREE.Mesh(legGeometry, denim);
+  rightLeg.position.set(0.13, 0.36, 0);
+  avatarGroup.add(rightLeg);
+  avatar.parts.rightLeg = rightLeg;
+
+  const leftShoe = new THREE.Mesh(new THREE.BoxGeometry(0.19, 0.08, 0.28), shoe);
+  leftShoe.position.set(-0.13, 0.05, 0.08);
+  avatarGroup.add(leftShoe);
+  avatar.parts.leftShoe = leftShoe;
+
+  const rightShoe = leftShoe.clone();
+  rightShoe.position.x = 0.13;
+  avatarGroup.add(rightShoe);
+  avatar.parts.rightShoe = rightShoe;
+
+  const tinyHeart = new THREE.Mesh(
+    new THREE.ShapeGeometry(makeHeartShape()),
+    new THREE.MeshBasicMaterial({ color: 0xffd18b, transparent: true, opacity: 0.86 })
+  );
+  tinyHeart.position.set(0.03, 1.0, 0.37);
+  tinyHeart.scale.set(0.07, 0.07, 0.07);
+  avatarGroup.add(tinyHeart);
+
+  avatarGroup.rotation.y = avatar.heading;
+}
+
+function makeHeartShape() {
+  const heart = new THREE.Shape();
+  heart.moveTo(0, 0.08);
+  heart.bezierCurveTo(0, 0.16, -0.16, 0.18, -0.16, 0.03);
+  heart.bezierCurveTo(-0.16, -0.08, -0.04, -0.14, 0, -0.2);
+  heart.bezierCurveTo(0.04, -0.14, 0.16, -0.08, 0.16, 0.03);
+  heart.bezierCurveTo(0.16, 0.18, 0, 0.16, 0, 0.08);
+  return heart;
+}
+
+function setAvatarPosition(x, z) {
+  avatarGroup.position.set(x, room.floorY + 0.02, z);
 }
 
 function addFloor(area, color, label) {
@@ -1912,10 +2116,321 @@ function wrapCanvasText(ctx, text, x, y, maxWidth, lineHeight, maxY = Infinity) 
   }
 }
 
+function setupJoystick() {
+  if (!joystick || !joystickKnob) {
+    return;
+  }
+
+  const updateJoystick = (event) => {
+    if (joystickState.pointerId !== event.pointerId) {
+      return;
+    }
+    const rect = joystick.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+    const maxDistance = rect.width * 0.32;
+    const rawX = event.clientX - centerX;
+    const rawY = event.clientY - centerY;
+    const length = Math.hypot(rawX, rawY);
+    const scale = length > maxDistance ? maxDistance / length : 1;
+    const knobX = rawX * scale;
+    const knobY = rawY * scale;
+
+    joystickState.x = knobX / maxDistance;
+    joystickState.y = knobY / maxDistance;
+    joystickKnob.style.transform = `translate(calc(-50% + ${knobX}px), calc(-50% + ${knobY}px))`;
+  };
+
+  const resetJoystick = (event) => {
+    if (joystickState.pointerId !== event.pointerId) {
+      return;
+    }
+    joystickState.pointerId = null;
+    joystickState.x = 0;
+    joystickState.y = 0;
+    joystickKnob.style.transform = "translate(-50%, -50%)";
+  };
+
+  joystick.addEventListener("pointerdown", (event) => {
+    joystickState.pointerId = event.pointerId;
+    joystick.setPointerCapture(event.pointerId);
+    updateJoystick(event);
+  });
+  joystick.addEventListener("pointermove", updateJoystick);
+  joystick.addEventListener("pointerup", resetJoystick);
+  joystick.addEventListener("pointercancel", resetJoystick);
+}
+
+function updateAvatar(delta, elapsed) {
+  const forwardInput =
+    (isPressed("w") || isPressed("arrowup") ? 1 : 0) -
+    (isPressed("s") || isPressed("arrowdown") ? 1 : 0) -
+    joystickState.y;
+  const rightInput =
+    (isPressed("d") || isPressed("arrowright") ? 1 : 0) -
+    (isPressed("a") || isPressed("arrowleft") ? 1 : 0) +
+    joystickState.x;
+
+  forwardVector.set(Math.sin(avatar.heading), 0, Math.cos(avatar.heading));
+  rightVector.set(Math.cos(avatar.heading), 0, -Math.sin(avatar.heading));
+  moveVector
+    .copy(forwardVector)
+    .multiplyScalar(forwardInput)
+    .addScaledVector(rightVector, rightInput);
+
+  avatar.isMoving = moveVector.lengthSq() > 0.015;
+  if (avatar.isMoving) {
+    moveVector.normalize();
+    proposedPosition.copy(avatarGroup.position).addScaledVector(moveVector, avatar.speed * delta);
+    applyAvatarMove(proposedPosition.x, proposedPosition.z);
+
+    const targetHeading = Math.atan2(moveVector.x, moveVector.z);
+    avatar.heading = lerpAngle(avatar.heading, targetHeading, 1 - Math.exp(-10 * delta));
+    avatar.walkCycle += delta * 9.2;
+  } else {
+    avatar.walkCycle += delta * 2.4;
+  }
+
+  avatarGroup.rotation.y = avatar.heading;
+  animateAvatar(elapsed);
+}
+
+function animateAvatar(elapsed) {
+  const stride = avatar.isMoving ? Math.sin(avatar.walkCycle) : Math.sin(elapsed * 1.7) * 0.12;
+  const bounce = avatar.isMoving ? Math.abs(Math.sin(avatar.walkCycle * 2)) * 0.035 : Math.sin(elapsed * 1.4) * 0.008;
+
+  avatarGroup.position.y = room.floorY + 0.02 + bounce;
+  avatar.parts.body.rotation.x = avatar.isMoving ? Math.sin(avatar.walkCycle * 2) * 0.025 : 0;
+  avatar.parts.head.rotation.y = Math.sin(elapsed * 0.8) * 0.05;
+  avatar.parts.leftArm.rotation.x = stride * 0.48;
+  avatar.parts.rightArm.rotation.x = -stride * 0.48;
+  avatar.parts.leftHand.position.z = 0.03 + stride * 0.14;
+  avatar.parts.rightHand.position.z = 0.03 - stride * 0.14;
+  avatar.parts.leftLeg.rotation.x = -stride * 0.42;
+  avatar.parts.rightLeg.rotation.x = stride * 0.42;
+  avatar.parts.leftShoe.position.z = 0.08 - stride * 0.08;
+  avatar.parts.rightShoe.position.z = 0.08 + stride * 0.08;
+}
+
+function isPressed(key) {
+  return pressedKeys.has(key);
+}
+
+function applyAvatarMove(nextX, nextZ) {
+  if (isAllowedAvatarPosition(nextX, nextZ)) {
+    setAvatarPosition(nextX, nextZ);
+    return;
+  }
+
+  if (isAllowedAvatarPosition(nextX, avatarGroup.position.z)) {
+    setAvatarPosition(nextX, avatarGroup.position.z);
+    return;
+  }
+
+  if (isAllowedAvatarPosition(avatarGroup.position.x, nextZ)) {
+    setAvatarPosition(avatarGroup.position.x, nextZ);
+  }
+}
+
+function isAllowedAvatarPosition(x, z) {
+  return isInsideZones(walkZones, x, z, avatar.radius) && !hitsFurniture(x, z, avatar.radius);
+}
+
+function isInsideZones(zones, x, z, radius = 0) {
+  return zones.some((zone) => (
+    x >= zone.minX + radius &&
+    x <= zone.maxX - radius &&
+    z >= zone.minZ + radius &&
+    z <= zone.maxZ - radius
+  ));
+}
+
+function hitsFurniture(x, z, radius) {
+  return furnitureColliders.some((item) => (
+    x >= item.minX - radius &&
+    x <= item.maxX + radius &&
+    z >= item.minZ - radius &&
+    z <= item.maxZ + radius
+  ));
+}
+
+function updateWalkCamera(immediate = false) {
+  if (cameraMode !== "walk") {
+    return;
+  }
+
+  forwardVector.set(Math.sin(avatar.heading), 0, Math.cos(avatar.heading));
+  const isSmallScreen = window.innerWidth <= 760;
+  if (isSmallScreen) {
+    const mobilePosition = getMobileFollowCameraPosition();
+    targetCamera.position.copy(mobilePosition);
+    targetCamera.lookAt.copy(avatarGroup.position);
+    targetCamera.lookAt.y = room.floorY + 0.9;
+
+    if (immediate) {
+      camera.position.copy(targetCamera.position);
+      controls.target.copy(targetCamera.lookAt);
+      camera.lookAt(controls.target);
+    }
+    return;
+  }
+
+  const distance = isSmallScreen ? 6.05 : 5.8;
+  const height = isSmallScreen ? 3.28 : 3.35;
+  const lookAhead = isSmallScreen ? 0.35 : 1.65;
+  const cameraPosition = getFollowCameraPosition(distance, height);
+
+  targetCamera.position.copy(cameraPosition);
+  targetCamera.lookAt
+    .copy(avatarGroup.position)
+    .addScaledVector(forwardVector, lookAhead);
+  targetCamera.lookAt.y = room.floorY + (isSmallScreen ? 1.42 : 1.2);
+
+  if (immediate) {
+    camera.position.copy(targetCamera.position);
+    controls.target.copy(targetCamera.lookAt);
+    camera.lookAt(controls.target);
+  }
+}
+
+function getMobileFollowCameraPosition() {
+  const offsets = [
+    { x: 0, y: 4.55, z: 4.65 },
+    { x: 0, y: 4.4, z: 3.2 },
+    { x: -1.65, y: 4.55, z: 3.15 },
+    { x: 1.65, y: 4.55, z: 3.15 },
+    { x: 0, y: 4.65, z: 2.2 }
+  ];
+
+  for (const offset of offsets) {
+    proposedPosition.set(
+      avatarGroup.position.x + offset.x,
+      room.floorY + offset.y,
+      avatarGroup.position.z + offset.z
+    );
+    if (isInsideZones(cameraZones, proposedPosition.x, proposedPosition.z, 0.05)) {
+      return proposedPosition.clone();
+    }
+  }
+
+  return proposedPosition
+    .set(
+      THREE.MathUtils.clamp(avatarGroup.position.x, -8.4, 8.4),
+      room.floorY + 4.65,
+      THREE.MathUtils.clamp(avatarGroup.position.z + 2.2, -8.9, 6.6)
+    )
+    .clone();
+}
+
+function getFollowCameraPosition(distance, height) {
+  for (let offset = distance; offset >= 2.35; offset -= 0.35) {
+    proposedPosition
+      .copy(avatarGroup.position)
+      .addScaledVector(forwardVector, -offset);
+    proposedPosition.y = room.floorY + height;
+    if (isInsideZones(cameraZones, proposedPosition.x, proposedPosition.z, 0.05)) {
+      return proposedPosition.clone();
+    }
+  }
+
+  return proposedPosition
+    .copy(avatarGroup.position)
+    .addScaledVector(forwardVector, -2.35)
+    .setY(room.floorY + height)
+    .clone();
+}
+
+function updateNearbyMemory() {
+  let bestCard = null;
+  let bestDistance = Infinity;
+
+  cards.forEach((card) => {
+    card.getWorldPosition(tempWorldPosition);
+    const distance = Math.hypot(
+      tempWorldPosition.x - avatarGroup.position.x,
+      tempWorldPosition.z - avatarGroup.position.z
+    );
+    if (distance < bestDistance && distance < 2.9) {
+      bestDistance = distance;
+      bestCard = card;
+    }
+  });
+
+  nearbyCard = bestCard;
+  if (interactBtn) {
+    interactBtn.disabled = !nearbyCard;
+  }
+
+  if (nearbyCard && !storyPanel.classList.contains("is-open") && !finalNote.classList.contains("is-open")) {
+    currentTitle.textContent = nearbyCard.userData.memory.title;
+    movementStatus.textContent = "Nearby memory";
+    return;
+  }
+
+  if (!storyPanel.classList.contains("is-open") && !finalNote.classList.contains("is-open")) {
+    currentTitle.textContent = memories[selectedIndex].title;
+    movementStatus.textContent = "Walking with Bee";
+  }
+}
+
+function openNearbyMemory() {
+  if (nearbyCard) {
+    focusMemory(nearbyCard.userData.index);
+    return;
+  }
+  focusMemory(selectedIndex);
+}
+
+function moveAvatarNearCard(card) {
+  card.getWorldPosition(tempWorldPosition);
+  card.getWorldQuaternion(tempQuaternion);
+  tempNormal.set(0, 0, 1).applyQuaternion(tempQuaternion).normalize();
+
+  const preferredX = tempWorldPosition.x + tempNormal.x * 1.95;
+  const preferredZ = tempWorldPosition.z + tempNormal.z * 1.95;
+  const candidate = findNearestWalkablePoint(preferredX, preferredZ, tempWorldPosition.x, tempWorldPosition.z);
+  setAvatarPosition(candidate.x, candidate.z);
+
+  const lookDirectionX = tempWorldPosition.x - avatarGroup.position.x;
+  const lookDirectionZ = tempWorldPosition.z - avatarGroup.position.z;
+  if (Math.hypot(lookDirectionX, lookDirectionZ) > 0.01) {
+    avatar.heading = Math.atan2(lookDirectionX, lookDirectionZ);
+    avatarGroup.rotation.y = avatar.heading;
+  }
+  cameraMode = "walk";
+  updateWalkCamera(true);
+}
+
+function findNearestWalkablePoint(preferredX, preferredZ, focusX, focusZ) {
+  if (isAllowedAvatarPosition(preferredX, preferredZ)) {
+    return { x: preferredX, z: preferredZ };
+  }
+
+  for (let radius = 1.2; radius <= 4.2; radius += 0.42) {
+    for (let step = 0; step < 18; step += 1) {
+      const angle = (step / 18) * Math.PI * 2;
+      const x = focusX + Math.cos(angle) * radius;
+      const z = focusZ + Math.sin(angle) * radius;
+      if (isAllowedAvatarPosition(x, z)) {
+        return { x, z };
+      }
+    }
+  }
+
+  return { x: avatarGroup.position.x, z: avatarGroup.position.z };
+}
+
+function lerpAngle(from, to, alpha) {
+  const delta = Math.atan2(Math.sin(to - from), Math.cos(to - from));
+  return from + delta * THREE.MathUtils.clamp(alpha, 0, 1);
+}
+
 async function beginExperience() {
   started = true;
   intro.classList.add("is-hidden");
-  storyPanel.classList.add("is-open");
+  storyPanel.classList.remove("is-open");
+  finalNote.classList.remove("is-open");
+  cameraMode = "walk";
   try {
     await audio.play();
     musicBtn.textContent = "Pause song";
@@ -1938,7 +2453,7 @@ async function toggleMusic() {
   }
 }
 
-function focusMemory(rawIndex, openPanel = true) {
+function focusMemory(rawIndex, openPanel = true, guideAvatar = false) {
   const index = (rawIndex + memories.length) % memories.length;
   selectedIndex = index;
   const card = cards[index];
@@ -1952,10 +2467,18 @@ function focusMemory(rawIndex, openPanel = true) {
   pentagonMode = Boolean(memory.pentagon);
   pentagonGroup.visible = pentagonMode;
 
-  followSelected = true;
-  updateCameraTargetFromCard(card);
+  followSelected = false;
+  cameraMode = "walk";
+  if (guideAvatar) {
+    moveAvatarNearCard(card);
+  }
 
   if (openPanel && started) {
+    storyPanel.classList.add("is-open");
+    finalNote.classList.remove("is-open");
+  } else if (openPanel) {
+    started = true;
+    intro.classList.add("is-hidden");
     storyPanel.classList.add("is-open");
     finalNote.classList.remove("is-open");
   }
@@ -1969,6 +2492,7 @@ function showFinalNote() {
   storyPanel.classList.remove("is-open");
   finalNote.classList.add("is-open");
   followSelected = false;
+  cameraMode = "overview";
   targetCamera.position.set(0, 4.1, 12.5);
   targetCamera.lookAt.set(0, 1.7, -1.8);
 }
@@ -2006,25 +2530,49 @@ function onSceneClick(event) {
 }
 
 function onKeydown(event) {
-  if (event.key === "ArrowLeft") {
-    focusMemory(selectedIndex - 1);
+  const key = event.key.toLowerCase();
+  if (["w", "a", "s", "d", "arrowup", "arrowdown", "arrowleft", "arrowright"].includes(key)) {
+    pressedKeys.add(key);
+    event.preventDefault();
   }
-  if (event.key === "ArrowRight") {
-    focusMemory(selectedIndex + 1);
+  if (key === "enter" || key === " ") {
+    openNearbyMemory();
+    event.preventDefault();
   }
-  if (event.key.toLowerCase() === "p") {
-    focusMemory(memories.findIndex((memory) => memory.pentagon));
+  if (key === "p") {
+    focusMemory(memories.findIndex((memory) => memory.pentagon), true, true);
   }
+  if (key === "[" || key === ",") {
+    focusMemory(selectedIndex - 1, true, true);
+  }
+  if (key === "]" || key === ".") {
+    focusMemory(selectedIndex + 1, true, true);
+  }
+}
+
+function onKeyup(event) {
+  pressedKeys.delete(event.key.toLowerCase());
 }
 
 function onResize() {
+  applyResponsiveCamera();
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
   renderer.setSize(window.innerWidth, window.innerHeight);
+  updateWalkCamera(true);
+}
+
+function applyResponsiveCamera() {
+  camera.fov = window.innerWidth <= 760 ? 58 : 48;
 }
 
 function animate() {
-  const elapsed = clock.getElapsedTime();
+  const delta = Math.min(clock.getDelta(), 0.05);
+  const elapsed = clock.elapsedTime;
+  updateAvatar(delta, elapsed);
+  updateWalkCamera();
+  updateNearbyMemory();
+
   chatGroup.children.forEach((card, index) => {
     card.position.y += Math.sin(elapsed * 0.7 + index) * 0.0014;
   });
@@ -2040,13 +2588,15 @@ function animate() {
 
   camera.position.lerp(targetCamera.position, 0.075);
   controls.target.lerp(targetCamera.lookAt, 0.085);
+  camera.lookAt(controls.target);
 
   cards.forEach((card, index) => {
     const isActive = index === selectedIndex;
+    const isNearby = card === nearbyCard;
     const isHover = card === hoveredCard;
-    const targetScale = isActive ? 1.12 : isHover ? 1.08 : 1;
+    const targetScale = isActive ? 1.12 : isNearby ? 1.1 : isHover ? 1.08 : 1;
     card.scale.lerp(new THREE.Vector3(targetScale, targetScale, targetScale), 0.08);
-    card.userData.glow.material.opacity = isActive ? 0.3 : isHover ? 0.18 : 0;
+    card.userData.glow.material.opacity = isActive ? 0.3 : isNearby ? 0.24 : isHover ? 0.18 : 0;
   });
 
   heartField.children.forEach((heart) => {
@@ -2054,6 +2604,5 @@ function animate() {
     heart.rotation.z += 0.006;
   });
 
-  controls.update();
   renderer.render(scene, camera);
 }

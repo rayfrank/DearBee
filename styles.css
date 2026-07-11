@@ -193,6 +193,79 @@ h1 {
   gap: 8px;
 }
 
+.mobile-walk-controls {
+  position: fixed;
+  left: 14px;
+  right: 14px;
+  bottom: 112px;
+  display: none;
+  align-items: flex-end;
+  justify-content: space-between;
+  pointer-events: none;
+}
+
+.joystick {
+  position: relative;
+  width: 112px;
+  height: 112px;
+  border: 1px solid rgba(255, 247, 236, 0.22);
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 50% 50%, rgba(255, 159, 192, 0.18), rgba(255, 255, 255, 0.06) 52%, rgba(14, 8, 14, 0.5));
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(16px);
+  pointer-events: auto;
+  touch-action: none;
+}
+
+.joystick::before,
+.joystick::after {
+  content: "";
+  position: absolute;
+  inset: 50% auto auto 50%;
+  width: 58%;
+  height: 1px;
+  background: rgba(255, 247, 236, 0.18);
+  transform: translate(-50%, -50%);
+}
+
+.joystick::after {
+  width: 1px;
+  height: 58%;
+}
+
+.joystick-knob {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 46px;
+  height: 46px;
+  border: 1px solid rgba(255, 247, 236, 0.36);
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(255, 159, 192, 0.98), rgba(255, 209, 139, 0.92));
+  box-shadow: 0 12px 28px rgba(255, 159, 192, 0.22);
+  transform: translate(-50%, -50%);
+}
+
+.walk-action {
+  min-width: 74px;
+  min-height: 54px;
+  border: 1px solid rgba(255, 247, 236, 0.24);
+  border-radius: 999px;
+  color: #261018;
+  background: linear-gradient(135deg, rgba(255, 159, 192, 0.98), rgba(112, 214, 208, 0.92));
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.3);
+  font-weight: 900;
+  pointer-events: auto;
+  touch-action: manipulation;
+}
+
+.walk-action:disabled {
+  color: rgba(255, 247, 236, 0.58);
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.22);
+}
+
 .text-button,
 .icon-button,
 .close-button {
@@ -343,6 +416,10 @@ h1 {
     justify-content: flex-start;
   }
 
+  .mobile-walk-controls {
+    display: flex;
+  }
+
   .text-button {
     flex: 1 1 132px;
     min-width: 0;
@@ -372,5 +449,19 @@ h1 {
 
   #musicBtn {
     grid-column: 1 / -1;
+  }
+
+  .mobile-walk-controls {
+    bottom: 144px;
+  }
+
+  .joystick {
+    width: 96px;
+    height: 96px;
+  }
+
+  .joystick-knob {
+    width: 40px;
+    height: 40px;
   }
 }
