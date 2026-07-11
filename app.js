@@ -596,6 +596,10 @@ const closeFinal = document.querySelector("#closeFinal");
 const joystick = document.querySelector("#joystick");
 const joystickKnob = document.querySelector("#joystickKnob");
 const interactBtn = document.querySelector("#interactBtn");
+const controlsHint = document.querySelector("#controlsHint");
+const memoryPrompt = document.querySelector("#memoryPrompt");
+const memoryPromptTitle = document.querySelector("#memoryPromptTitle");
+const memoryPromptHint = document.querySelector("#memoryPromptHint");
 
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x120b12);
@@ -675,6 +679,27 @@ const joystickState = {
   y: 0
 };
 
+const view = {
+  yaw: Math.PI,
+  pitch: 0
+};
+
+const lookState = {
+  pointerId: null,
+  lastX: 0,
+  lastY: 0,
+  dragDistance: 0,
+  active: false
+};
+
+const LOOK_YAW_SPEED = 0.0034;
+const LOOK_PITCH_SPEED = 0.0028;
+const LOOK_PITCH_MIN = -0.42;
+const LOOK_PITCH_MAX = 0.5;
+const LOOK_CLICK_THRESHOLD = 6;
+let nearbyPromptCard = null;
+let hasMovedOnce = false;
+
 const targetCamera = {
   position: camera.position.clone(),
   lookAt: controls.target.clone()
@@ -706,6 +731,7 @@ setAvatarPosition(1.85, 3.45);
 updateWalkCamera(true);
 focusMemory(0, false);
 setupJoystick();
+setupLookControls();
 
 beginBtn.addEventListener("click", beginExperience);
 prevBtn.addEventListener("click", () => focusMemory(selectedIndex - 1, true, true));
@@ -2161,6 +2187,46 @@ function setupJoystick() {
   joystick.addEventListener("pointercancel", resetJoystick);
 }
 
+function setupLookControls() {
+  const startLook = (event) => {
+    if (event.pointerType === "mouse" && event.button !== 0) {
+      return;
+    }
+    lookState.pointerId = event.pointerId;
+    lookState.lastX = event.clientX;
+    lookState.lastY = event.clientY;
+    lookState.dragDistance = 0;
+    lookState.active = true;
+    canvas.setPointerCapture(event.pointerId);
+  };
+
+  const moveLook = (event) => {
+    if (!lookState.active || event.pointerId !== lookState.pointerId) {
+      return;
+    }
+    const dx = event.clientX - lookState.lastX;
+    const dy = event.clientY - lookState.lastY;
+    lookState.lastX = event.clientX;
+    lookState.lastY = event.clientY;
+    lookState.dragDistance += Math.abs(dx) + Math.abs(dy);
+    view.yaw -= dx * LOOK_YAW_SPEED;
+    view.pitch = THREE.MathUtils.clamp(view.pitch - dy * LOOK_PITCH_SPEED, LOOK_PITCH_MIN, LOOK_PITCH_MAX);
+  };
+
+  const endLook = (event) => {
+    if (event.pointerId !== lookState.pointerId) {
+      return;
+    }
+    lookState.active = false;
+    lookState.pointerId = null;
+  };
+
+  canvas.addEventListener("pointerdown", startLook);
+  canvas.addEventListener("pointermove", moveLook);
+  canvas.addEventListener("pointerup", endLook);
+  canvas.addEventListener("pointercancel", endLook);
+}
+
 function updateAvatar(delta, elapsed) {
   const forwardInput =
     (isPressed("w") || isPressed("arrowup") ? 1 : 0) -
@@ -2171,8 +2237,8 @@ function updateAvatar(delta, elapsed) {
     (isPressed("a") || isPressed("arrowleft") ? 1 : 0) +
     joystickState.x;
 
-  forwardVector.set(Math.sin(avatar.heading), 0, Math.cos(avatar.heading));
-  rightVector.set(Math.cos(avatar.heading), 0, -Math.sin(avatar.heading));
+  forwardVector.set(Math.sin(view.yaw), 0, Math.cos(view.yaw));
+  rightVector.set(Math.cos(view.yaw), 0, -Math.sin(view.yaw));
   moveVector
     .copy(forwardVector)
     .multiplyScalar(forwardInput)
@@ -2180,6 +2246,10 @@ function updateAvatar(delta, elapsed) {
 
   avatar.isMoving = moveVector.lengthSq() > 0.015;
   if (avatar.isMoving) {
+    if (!hasMovedOnce) {
+      hasMovedOnce = true;
+      controlsHint?.classList.remove("is-visible");
+    }
     moveVector.normalize();
     proposedPosition.copy(avatarGroup.position).addScaledVector(moveVector, avatar.speed * delta);
     applyAvatarMove(proposedPosition.x, proposedPosition.z);
@@ -2259,67 +2329,25 @@ function updateWalkCamera(immediate = false) {
     return;
   }
 
-  forwardVector.set(Math.sin(avatar.heading), 0, Math.cos(avatar.heading));
+  forwardVector.set(Math.sin(view.yaw), 0, Math.cos(view.yaw));
   const isSmallScreen = window.innerWidth <= 760;
-  if (isSmallScreen) {
-    const mobilePosition = getMobileFollowCameraPosition();
-    targetCamera.position.copy(mobilePosition);
-    targetCamera.lookAt.copy(avatarGroup.position);
-    targetCamera.lookAt.y = room.floorY + 0.9;
 
-    if (immediate) {
-      camera.position.copy(targetCamera.position);
-      controls.target.copy(targetCamera.lookAt);
-      camera.lookAt(controls.target);
-    }
-    return;
-  }
-
-  const distance = isSmallScreen ? 6.05 : 5.8;
-  const height = isSmallScreen ? 3.28 : 3.35;
-  const lookAhead = isSmallScreen ? 0.35 : 1.65;
+  const distance = isSmallScreen ? 6.35 : 5.8;
+  const height = (isSmallScreen ? 4.05 : 3.35) + view.pitch * 2.5;
+  const lookAhead = isSmallScreen ? 0.6 : 1.65;
   const cameraPosition = getFollowCameraPosition(distance, height);
 
   targetCamera.position.copy(cameraPosition);
   targetCamera.lookAt
     .copy(avatarGroup.position)
     .addScaledVector(forwardVector, lookAhead);
-  targetCamera.lookAt.y = room.floorY + (isSmallScreen ? 1.42 : 1.2);
+  targetCamera.lookAt.y = room.floorY + (isSmallScreen ? 1.32 : 1.2) - view.pitch * 1.7;
 
   if (immediate) {
     camera.position.copy(targetCamera.position);
     controls.target.copy(targetCamera.lookAt);
     camera.lookAt(controls.target);
   }
-}
-
-function getMobileFollowCameraPosition() {
-  const offsets = [
-    { x: 0, y: 4.55, z: 4.65 },
-    { x: 0, y: 4.4, z: 3.2 },
-    { x: -1.65, y: 4.55, z: 3.15 },
-    { x: 1.65, y: 4.55, z: 3.15 },
-    { x: 0, y: 4.65, z: 2.2 }
-  ];
-
-  for (const offset of offsets) {
-    proposedPosition.set(
-      avatarGroup.position.x + offset.x,
-      room.floorY + offset.y,
-      avatarGroup.position.z + offset.z
-    );
-    if (isInsideZones(cameraZones, proposedPosition.x, proposedPosition.z, 0.05)) {
-      return proposedPosition.clone();
-    }
-  }
-
-  return proposedPosition
-    .set(
-      THREE.MathUtils.clamp(avatarGroup.position.x, -8.4, 8.4),
-      room.floorY + 4.65,
-      THREE.MathUtils.clamp(avatarGroup.position.z + 2.2, -8.9, 6.6)
-    )
-    .clone();
 }
 
 function getFollowCameraPosition(distance, height) {
@@ -2361,16 +2389,45 @@ function updateNearbyMemory() {
     interactBtn.disabled = !nearbyCard;
   }
 
-  if (nearbyCard && !storyPanel.classList.contains("is-open") && !finalNote.classList.contains("is-open")) {
+  const panelsClosed = !storyPanel.classList.contains("is-open") && !finalNote.classList.contains("is-open");
+
+  if (nearbyCard && panelsClosed) {
     currentTitle.textContent = nearbyCard.userData.memory.title;
     movementStatus.textContent = "Nearby memory";
+    showMemoryPrompt(nearbyCard);
     return;
   }
 
-  if (!storyPanel.classList.contains("is-open") && !finalNote.classList.contains("is-open")) {
+  hideMemoryPrompt();
+
+  if (panelsClosed) {
     currentTitle.textContent = memories[selectedIndex].title;
     movementStatus.textContent = "Walking with Bee";
   }
+}
+
+function isTouchLayout() {
+  return window.innerWidth <= 760 || window.matchMedia("(pointer: coarse)").matches;
+}
+
+function showMemoryPrompt(card) {
+  if (!memoryPrompt || nearbyPromptCard === card) {
+    return;
+  }
+  nearbyPromptCard = card;
+  memoryPromptTitle.textContent = card.userData.memory.title;
+  memoryPromptHint.textContent = isTouchLayout()
+    ? "Tap View below to open this memory"
+    : "Press E or Space to open this memory";
+  memoryPrompt.classList.add("is-visible");
+}
+
+function hideMemoryPrompt() {
+  if (!memoryPrompt || nearbyPromptCard === null) {
+    return;
+  }
+  nearbyPromptCard = null;
+  memoryPrompt.classList.remove("is-visible");
 }
 
 function openNearbyMemory() {
@@ -2431,12 +2488,24 @@ async function beginExperience() {
   storyPanel.classList.remove("is-open");
   finalNote.classList.remove("is-open");
   cameraMode = "walk";
+  showControlsHint();
   try {
     await audio.play();
     musicBtn.textContent = "Pause song";
   } catch {
     musicBtn.textContent = audioReady ? "Play song" : "Music";
   }
+}
+
+function showControlsHint() {
+  if (!controlsHint) {
+    return;
+  }
+  controlsHint.textContent = isTouchLayout()
+    ? "Drag the joystick to move · Drag the screen to look around · Tap View near a memory"
+    : "WASD or arrow keys to move · Drag the mouse to look around · Press E or Space near a memory";
+  controlsHint.classList.add("is-visible");
+  window.setTimeout(() => controlsHint.classList.remove("is-visible"), 6500);
 }
 
 async function toggleMusic() {
@@ -2523,7 +2592,7 @@ function updateHover() {
 }
 
 function onSceneClick(event) {
-  if (event.target !== canvas || !hoveredCard) {
+  if (event.target !== canvas || !hoveredCard || lookState.dragDistance > LOOK_CLICK_THRESHOLD) {
     return;
   }
   focusMemory(hoveredCard.userData.index);
@@ -2535,7 +2604,7 @@ function onKeydown(event) {
     pressedKeys.add(key);
     event.preventDefault();
   }
-  if (key === "enter" || key === " ") {
+  if (key === "enter" || key === " " || key === "e") {
     openNearbyMemory();
     event.preventDefault();
   }
